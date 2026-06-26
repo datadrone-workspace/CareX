@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+!function(){var i="analytics",analytics=window[i]=window[i]||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","screen","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware","register"];analytics.factory=function(e){return function(){if(window[i].initialized)return window[i][e].apply(window[i],arguments);var n=Array.prototype.slice.call(arguments);if(["track","screen","alias","group","page","identify"].indexOf(e)>-1){var c=document.querySelector("link[rel='canonical']");n.push({__t:"bpc",c:c&&c.getAttribute("href")||void 0,p:location.pathname,u:location.href,s:location.search,t:document.title,r:document.referrer})}n.unshift(e);analytics.push(n);return analytics}};for(var n=0;n<analytics.methods.length;n++){var key=analytics.methods[n];analytics[key]=analytics.factory(key)}analytics.load=function(key,n){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.setAttribute("data-global-segment-analytics-key",i);t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r);analytics._loadOptions=n};analytics._writeKey="OuHHWC4DEeBiSqJj0mamaXIsiX8cHG7S";;analytics.SNIPPET_VERSION="5.2.0";
+analytics.load("OuHHWC4DEeBiSqJj0mamaXIsiX8cHG7S");
+analytics.page();
+}}();
+</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CareX Simulation Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.28.4/babel.min.js"></script>
+<style>
+  :root{
+    --green:#16A34A; --green-hover:#15803D; --green-light:#DCFCE7;
+    --bg:#0B0F0D; --panel:#111613; --panel-2:#161D19;
+    --text:#F3F6F4; --text-secondary:#8B9890;
+    --border:#222B26; --success:#22C55E; --warning:#F59E0B; --error:#EF4444;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
+  ::-webkit-scrollbar{width:8px;}
+  ::-webkit-scrollbar-thumb{background:#2A352F;border-radius:8px;}
+  button{font-family:inherit;cursor:pointer;}
+
+  .shell{min-height:100vh;display:flex;flex-direction:column;}
+  .topbar{
+    border-bottom:1px solid var(--border);background:rgba(11,15,13,0.9);position:sticky;top:0;z-index:20;
+    backdrop-filter:blur(6px);
+  }
+  .topbar-inner{max-width:1320px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand-mark{width:28px;height:28px;border-radius:7px;background:var(--green);display:flex;align-items:center;justify-content:center;}
+  .brand-text{font-weight:700;font-size:16px;}
+  .brand-sub{font-size:11px;color:var(--text-secondary);letter-spacing:.04em;text-transform:uppercase;margin-top:1px;}
+  .env-pill{
+    font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#FCD34D;
+    background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3);padding:4px 10px;border-radius:999px;
+  }
+  .conn-pill{
+    font-size:11.5px;font-weight:600;color:var(--text-secondary);display:flex;align-items:center;gap:6px;
+  }
+  .conn-dot{width:7px;height:7px;border-radius:50%;background:var(--success);box-shadow:0 0 0 3px rgba(34,197,94,.15);}
+
+  .layout{max-width:1320px;margin:0 auto;padding:28px 24px 60px;width:100%;flex:1;display:grid;grid-template-columns:340px 1fr;gap:22px;}
+  @media (max-width:980px){ .layout{grid-template-columns:1fr;} }
+
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px;}
+  .panel-title{font-size:13px;font-weight:700;letter-spacing:.02em;color:var(--text-secondary);text-transform:uppercase;margin-bottom:14px;}
+
+  .sim-btn{
+    width:100%;text-align:left;background:var(--panel-2);border:1px solid var(--border);border-radius:11px;
+    padding:13px 14px;margin-bottom:10px;display:flex;align-items:center;gap:12px;transition:border-color .15s, background .15s;
+  }
+  .sim-btn:hover{border-color:var(--green);background:#172019;}
+  .sim-btn.active{border-color:var(--green); background:rgba(22,163,74,0.12);}
+  .sim-btn .si{width:34px;height:34px;border-radius:9px;background:rgba(22,163,74,0.15);color:var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .sim-btn-title{font-size:13.5px;font-weight:600;}
+  .sim-btn-sub{font-size:11.5px;color:var(--text-secondary);margin-top:2px;}
+
+  .main-col{display:flex;flex-direction:column;gap:18px;}
+
+  .hero-panel{
+    background:linear-gradient(135deg,#0F1B14,#11201A 60%,#0E1813);
+    border:1px solid var(--border);border-radius:16px;padding:22px;
+  }
+  .hero-title{font-size:18px;font-weight:700;}
+  .hero-desc{font-size:13px;color:var(--text-secondary);margin-top:6px;max-width:640px;line-height:1.6;}
+  .empty-state{padding:48px 20px;text-align:center;color:var(--text-secondary);font-size:13.5px;}
+  .empty-state svg{margin-bottom:10px;opacity:.5;}
+
+  .step-flow{display:flex;flex-direction:column;gap:0;}
+  .step{
+    display:flex;align-items:flex-start;gap:14px;position:relative;padding-bottom:26px;
+  }
+  .step:last-child{padding-bottom:0;}
+  .step::before{
+    content:"";position:absolute;left:15px;top:34px;bottom:0;width:2px;background:var(--border);
+  }
+  .step:last-child::before{display:none;}
+  .step-node{
+    width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    border:2px solid var(--border);background:var(--panel-2);color:var(--text-secondary);transition:all .35s;
+    z-index:1;
+  }
+  .step-node.done{background:var(--green);border-color:var(--green);color:#06150A;}
+  .step-node.warn{background:var(--warning);border-color:var(--warning);color:#1A1300;}
+  .step-node.danger{background:var(--error);border-color:var(--error);color:#1A0505;}
+  .step-node.pending{background:var(--panel-2);border-color:var(--border);}
+  .step-body{flex:1; padding-top:3px;}
+  .step-event{
+    font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:12.5px; font-weight:600; color:var(--text-secondary);
+  }
+  .step-title{font-size:14.5px;font-weight:600;margin-top:3px;}
+  .step-desc{font-size:12.5px;color:var(--text-secondary);margin-top:3px;line-height:1.5;}
+  .step.visible .step-event, .step.visible .step-title, .step.visible .step-desc{opacity:1;}
+  .step:not(.visible){opacity:.35;}
+  .step{transition:opacity .3s;}
+
+  .why-box{
+    margin-top:18px;border:1px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.07);border-radius:12px;padding:16px;
+  }
+  .why-title{font-size:12.5px;font-weight:700;color:#FCD34D;letter-spacing:.03em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+  .why-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px;}
+  .why-list li{font-size:13px;display:flex;gap:8px;align-items:flex-start;color:#FDE9C2;}
+  .why-list li svg{margin-top:2px;flex-shrink:0;color:#FCD34D;}
+
+  .feed{display:flex;flex-direction:column;gap:0;max-height:480px;overflow-y:auto;}
+  .feed-item{
+    display:flex; gap:10px; align-items:flex-start; padding:10px 0; border-bottom:1px solid var(--border);
+    animation:slidein .25s ease;
+  }
+  .feed-item:last-child{border-bottom:none;}
+  @keyframes slidein{from{opacity:0; transform:translateY(-4px);} to{opacity:1; transform:translateY(0);}}
+  .feed-dot{width:7px;height:7px;border-radius:50%;background:var(--green);margin-top:6px;flex-shrink:0;}
+  .feed-dot.alert{background:var(--error);}
+  .feed-dot.warn{background:var(--warning);}
+  .feed-event{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;font-weight:600;}
+  .feed-meta{font-size:11px;color:var(--text-secondary);margin-top:2px;}
+  .feed-time{font-size:10.5px;color:var(--text-secondary);font-family:ui-monospace,monospace;flex-shrink:0;}
+
+  .badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+  .badge{font-size:11.5px;font-weight:600;background:rgba(255,255,255,0.05);border:1px solid var(--border);padding:5px 10px;border-radius:999px;color:var(--text-secondary);}
+
+  .btn-clear{background:transparent;border:1px solid var(--border);color:var(--text-secondary);font-size:11.5px;font-weight:600;border-radius:8px;padding:6px 10px;}
+  .btn-clear:hover{border-color:var(--error);color:var(--error);}
+
+  .footer-note{text-align:center;font-size:11px;color:var(--text-secondary);padding-top:8px;}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef } = React;
+
+/* Listen to the same channel the patient portal writes to, so events
+   originating from real portal activity show up here too. Each simulation
+   below ALSO generates its own synthetic sequence for live demos when the
+   portal isn't open. */
+const CHANNEL_NAME = "carex_events";
+const SIM_SOURCE = "carex_simulation_center";
+const bc = ("BroadcastChannel" in window) ? new BroadcastChannel(CHANNEL_NAME) : null;
+
+function emit(eventName, properties = {}){
+  const payload = { event: eventName, properties, source: SIM_SOURCE, timestamp: new Date().toISOString() };
+  if(bc) bc.postMessage(payload);
+  try{
+    const existing = JSON.parse(localStorage.getItem("carex_event_log") || "[]");
+    existing.push(payload);
+    localStorage.setItem("carex_event_log", JSON.stringify(existing.slice(-500)));
+  }catch(e){}
+  // Fire the real Segment event so it shows up in the Segment dashboard.
+  if(window.analytics && typeof window.analytics.track === "function"){
+    window.analytics.track(eventName, properties);
+  }
+  return payload;
+}
+
+function Icon({ name, ...props }){
+  const paths = {
+    bolt: "M13 2 4 14h6l-1 8 9-12h-6l1-8Z",
+    flask: "M9 2h6M10 2v6.5L4.5 18a2 2 0 0 0 1.7 3h11.6a2 2 0 0 0 1.7-3L14 8.5V2",
+    heart: "M12 21s-7-4.6-9.5-9.1C.7 8.4 2.2 4.9 5.6 4.1 8 3.6 10 4.8 12 7c2-2.2 4-3.4 6.4-2.9 3.4.8 4.9 4.3 3.1 7.8C19 16.4 12 21 12 21Z",
+    pulse: "M3 12h4l2 7 4-14 2 7h6",
+    program: "M4 4h16v16H4ZM4 9h16",
+    check: "M20 6 9 17l-5-5",
+    alert: "M12 9v4M12 17h.01M10.3 3.9 2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z",
+    clock: "M12 7v5l3 3M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z",
+    cal: "M7 3v3M17 3v3M4 8h16M5 5h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z",
+    x: "M18 6 6 18M6 6l12 12",
+    info: "M12 16v-4m0-4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z",
+    stream: "M4 6h16M4 12h10M4 18h16",
+    trash: "M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13",
+  };
+  const d = paths[name] || "";
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d={d}/>
+    </svg>
+  );
+}
+
+/* ============================================================
+   SIMULATION DEFINITIONS
+   Each simulation is a scripted sequence of (event, label, desc, tone, delayMs)
+   plus a "why" explanation rendered once the sequence completes.
+   ============================================================ */
+const SIMULATIONS = {
+  missed_followup: {
+    title: "Simulate Missed Follow-Up",
+    icon: "alert",
+    summary: "Walks a cardiology patient through a completed consultation, an unbooked 30-day follow-up, and the resulting risk classification.",
+    patient: "Patient CRX-77231 · Cardiology",
+    steps: [
+      { event:"consultation_completed", title:"Consultation completed", desc:"Cardiology consultation with Dr. Ramesh Subramanian completed.", tone:"done" },
+      { event:"followup_recommended", title:"Follow-up recommended", desc:"A 30-day follow-up window is opened.", tone:"done" },
+      { event:"followup_due", title:"30 days elapsed — follow-up due", desc:"The recommended window closes with no booking on file.", tone:"warn" },
+      { event:"followup_missed", title:"Follow-up missed", desc:"No appointment was booked within the window.", tone:"warn" },
+      { event:"patient_at_risk", title:"Patient flagged at risk", desc:"Classified as Follow-Up Leakage risk.", tone:"danger" },
+    ],
+    why: [
+      "Cardiology consultation completed",
+      "Follow-up recommended",
+      "35 days elapsed",
+      "No appointment booked",
+    ],
+    whyHeading: "Patient classified as Follow-Up Risk because:",
+    recommended: ["Send a follow-up booking reminder", "Surface a prominent booking CTA on next login", "Notify the care coordinator queue"],
+  },
+  diagnostic_dropoff: {
+    title: "Simulate Diagnostic Drop-Off",
+    icon: "flask",
+    summary: "Tracks a patient from consultation through a recommended blood test that is never booked or completed.",
+    patient: "Patient CRX-58820 · Internal Medicine",
+    steps: [
+      { event:"consultation_completed", title:"Consultation completed", desc:"General consultation with Dr. Karthik Iyer completed.", tone:"done" },
+      { event:"test_recommended", title:"Blood test recommended", desc:"Lipid Profile recommended for cardiovascular screening.", tone:"done" },
+      { event:"test_booking_started", title:"Booking flow opened, then abandoned", desc:"Patient began booking but did not complete it.", tone:"warn" },
+      { event:"diagnostic_dropoff_detected", title:"Diagnostic drop-off detected", desc:"No booking or completion recorded after 14 days.", tone:"danger" },
+    ],
+    why: [
+      "Lipid Profile recommended on consultation",
+      "Booking flow opened but not completed",
+      "14 days elapsed with no test booked",
+      "No lab result on file",
+    ],
+    whyHeading: "Patient classified as Diagnostic Drop-Off because:",
+    recommended: ["Send a test-booking nudge", "Offer home sample collection", "Surface pending test on homepage"],
+  },
+  diabetes_candidate: {
+    title: "Simulate Diabetes Candidate",
+    icon: "pulse",
+    summary: "Builds the activity pattern that identifies a patient as a strong candidate for the Diabetes Care Program.",
+    patient: "Patient CRX-30142 · Endocrinology",
+    steps: [
+      { event:"consultation_completed", title:"Diabetes consultation completed", desc:"Consultation with Dr. Anjali Verma completed.", tone:"done" },
+      { event:"test_recommended", title:"HbA1c test recommended", desc:"Glycated haemoglobin test recommended.", tone:"done" },
+      { event:"lab_result_uploaded", title:"HbA1c result uploaded", desc:"Result places patient in pre-diabetic range.", tone:"done" },
+      { event:"specialty_viewed", title:"Nutrition consultation booked", desc:"Patient booked a nutrition consultation with Dr. Priya Raghavan.", tone:"done" },
+      { event:"chronic_care_candidate_detected", title:"Chronic care candidate detected", desc:"Pattern matches Diabetes Care Program criteria.", tone:"warn" },
+    ],
+    why: [
+      "Diabetes consultation completed",
+      "HbA1c test completed with elevated result",
+      "Nutrition consultation booked",
+      "Pattern matches chronic care enrollment criteria",
+    ],
+    whyHeading: "Patient classified as Diabetes Care Candidate because:",
+    recommended: ["Promote Diabetes Care Program on homepage", "Notify program enrollment specialist", "Suggest a nutrition follow-up plan"],
+  },
+  cardiac_candidate: {
+    title: "Simulate Cardiac Candidate",
+    icon: "heart",
+    summary: "Builds the activity pattern that identifies a patient as a strong candidate for the Cardiac Care Program.",
+    patient: "Patient CRX-44903 · Cardiology",
+    steps: [
+      { event:"consultation_completed", title:"Cardiology consultation completed", desc:"Consultation with Dr. Ramesh Subramanian completed.", tone:"done" },
+      { event:"test_recommended", title:"ECG & Lipid Profile recommended", desc:"Diagnostic panel recommended for risk assessment.", tone:"done" },
+      { event:"test_completed", title:"Diagnostic panel completed", desc:"Results indicate elevated cardiovascular risk.", tone:"done" },
+      { event:"chronic_care_candidate_detected", title:"Chronic care candidate detected", desc:"Pattern matches Cardiac Care Program criteria.", tone:"warn" },
+    ],
+    why: [
+      "Cardiology consultation completed",
+      "Diagnostic panel completed with elevated risk markers",
+      "No existing cardiac care plan on file",
+      "Pattern matches chronic care enrollment criteria",
+    ],
+    whyHeading: "Patient classified as Cardiac Care Candidate because:",
+    recommended: ["Promote Cardiac Care Program on homepage", "Offer a home BP monitoring kit", "Schedule a cardiologist tele-round"],
+  },
+  program_enrollment: {
+    title: "Simulate Program Enrollment",
+    icon: "program",
+    summary: "Walks a candidate patient through viewing, starting, and completing enrollment into a care program.",
+    patient: "Patient CRX-30142 · Diabetes Care Program",
+    steps: [
+      { event:"program_viewed", title:"Program viewed", desc:"Patient viewed the Diabetes Care Program page.", tone:"done" },
+      { event:"program_enrollment_started", title:"Enrollment started", desc:"Patient opened the enrollment confirmation flow.", tone:"done" },
+      { event:"program_enrolled", title:"Program enrolled", desc:"Enrollment confirmed and routed to a care coordinator.", tone:"done" },
+      { event:"segment_changed", title:"Segment updated", desc:"Patient moved from 'Diabetes Care Candidate' to 'Active Program Member'.", tone:"done" },
+    ],
+    why: [
+      "Patient was previously flagged as a chronic care candidate",
+      "Patient viewed the recommended program",
+      "Patient completed the enrollment flow",
+      "Segment membership updated to reflect active enrollment",
+    ],
+    whyHeading: "Patient moved to Active Program Member because:",
+    recommended: ["Schedule onboarding call with care coordinator", "Send program welcome kit", "Set first check-in reminder at 30 days"],
+  },
+};
+
+const SIM_ORDER = ["missed_followup","diagnostic_dropoff","diabetes_candidate","cardiac_candidate","program_enrollment"];
+
+/* These three simulations also drive the patient portal homepage banner.
+   The event name fired here matches exactly what the homepage listens for
+   (and exactly what the Segment dashboard will show as the event name). */
+const BANNER_TRIGGER_EVENTS = {
+  missed_followup: (patientId) => ({ patient_id: patientId, status: "overdue" }),
+  diagnostic_dropoff: (patientId) => ({ patient_id: patientId, status: "pending" }),
+  diabetes_candidate: (patientId) => ({ patient_id: patientId, status: "eligible" }),
+};
+
+/* ============================================================
+   COMPONENTS
+   ============================================================ */
+function toneClass(tone){
+  if(tone==="warn") return "warn";
+  if(tone==="danger") return "danger";
+  return "done";
+}
+
+function StepFlow({ sim, visibleCount }){
+  return (
+    <div className="step-flow">
+      {sim.steps.map((s, i)=>(
+        <div className={`step ${i < visibleCount ? "visible" : ""}`} key={i}>
+          <div className={`step-node ${i < visibleCount ? toneClass(s.tone) : "pending"}`}>
+            {i < visibleCount ? <Icon name="check" width="14" height="14" /> : <span style={{fontSize:11, fontWeight:700}}>{i+1}</span>}
+          </div>
+          <div className="step-body">
+            <div className="step-event">{s.event}</div>
+            <div className="step-title">{s.title}</div>
+            <div className="step-desc">{s.desc}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function FeedItem({ item }){
+  const tone = item.properties && item.properties.riskType ? "alert"
+    : /missed|risk|dropoff|due/.test(item.event) ? "warn" : "";
+  return (
+    <div className="feed-item">
+      <div className={`feed-dot ${tone}`}></div>
+      <div style={{flex:1}}>
+        <div className="feed-event">{item.event}</div>
+        <div className="feed-meta">{item.source === SIM_SOURCE ? "Simulation Center" : "Patient Portal"} {item.properties && item.properties.patient ? `· ${item.properties.patient}` : ""}</div>
+      </div>
+      <div className="feed-time">{new Date(item.timestamp).toLocaleTimeString([], {hour:"2-digit", minute:"2-digit", second:"2-digit"})}</div>
+    </div>
+  );
+}
+
+function App(){
+  const [activeKey, setActiveKey] = useState(null);
+  const [visibleCount, setVisibleCount] = useState(0);
+  const [running, setRunning] = useState(false);
+  const [feed, setFeed] = useState([]);
+  const timeoutsRef = useRef([]);
+
+  useEffect(()=>{
+    if(!bc) return;
+    const handler = (msg) => {
+      setFeed(f => [msg.data, ...f].slice(0, 80));
+    };
+    bc.onmessage = handler;
+    return () => { bc.onmessage = null; };
+  },[]);
+
+  const clearTimers = () => { timeoutsRef.current.forEach(clearTimeout); timeoutsRef.current = []; };
+
+  const runSimulation = (key) => {
+    clearTimers();
+    setActiveKey(key);
+    setVisibleCount(0);
+    setRunning(true);
+    const sim = SIMULATIONS[key];
+    const patientIdMatch = sim.patient.match(/CRX-\d+/);
+    const patientId = patientIdMatch ? patientIdMatch[0] : sim.patient;
+    sim.steps.forEach((s, i)=>{
+      const t = setTimeout(()=>{
+        emit(s.event, { patient: sim.patient, step: i+1, simulation: key });
+        setVisibleCount(i+1);
+        if(i === sim.steps.length - 1){
+          setRunning(false);
+          // Fire the dedicated homepage banner-trigger event, exactly named
+          // to match analytics.track("missed_followup", ...) etc.
+          if(BANNER_TRIGGER_EVENTS[key]){
+            emit(key, BANNER_TRIGGER_EVENTS[key](patientId));
+          }
+        }
+      }, (i+1) * 850);
+      timeoutsRef.current.push(t);
+    });
+  };
+
+  useEffect(()=>()=>clearTimers(), []);
+
+  const sim = activeKey ? SIMULATIONS[activeKey] : null;
+  const completed = sim && visibleCount === sim.steps.length;
+
+  return (
+    <div className="shell">
+      <div className="topbar">
+        <div className="topbar-inner">
+          <div className="brand">
+            <div className="brand-mark">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#06150A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" />
+              </svg>
+            </div>
+            <div>
+              <div className="brand-text">CareX Simulation Center</div>
+              <div className="brand-sub">CDP behaviour demonstrations</div>
+            </div>
+          </div>
+          <div style={{display:"flex", alignItems:"center", gap:14}}>
+            <div className="env-pill">Internal · Not patient-facing</div>
+            <div className="conn-pill"><span className="conn-dot"></span>Listening on shared event bus</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="layout">
+        <div className="panel">
+          <div className="panel-title">Run a simulation</div>
+          {SIM_ORDER.map(key=>{
+            const s = SIMULATIONS[key];
+            return (
+              <button key={key} className={`sim-btn ${activeKey===key?"active":""}`} onClick={()=>runSimulation(key)}>
+                <div className="si"><Icon name={s.icon} width="16" height="16" /></div>
+                <div>
+                  <div className="sim-btn-title">{s.title}</div>
+                  <div className="sim-btn-sub">{s.patient}</div>
+                </div>
+              </button>
+            );
+          })}
+          <div className="badge-row">
+            <span className="badge">5 scripted scenarios</span>
+            <span className="badge">No patient data is sent anywhere</span>
+          </div>
+        </div>
+
+        <div className="main-col">
+          <div className="hero-panel">
+            {!sim && (
+              <>
+                <div className="hero-title">Demonstrate how CareX detects patient risk, in real time</div>
+                <div className="hero-desc">
+                  Pick a scenario on the left. Each one replays a realistic sequence of patient events — exactly the
+                  events the patient portal emits in the background — and shows the resulting CDP classification
+                  along with a plain-language explanation of why it fired.
+                </div>
+              </>
+            )}
+            {sim && (
+              <>
+                <div className="hero-title">{sim.title}</div>
+                <div className="hero-desc">{sim.summary}</div>
+              </>
+            )}
+          </div>
+
+          <div className="panel">
+            <div className="panel-title">Event timeline</div>
+            {!sim && <div className="empty-state"><Icon name="stream" width="28" height="28" /><div>Run a simulation to see the live event timeline.</div></div>}
+            {sim && <StepFlow sim={sim} visibleCount={visibleCount} />}
+            {sim && completed && (
+              <div className="why-box">
+                <div className="why-title"><Icon name="info" width="14" height="14" />{sim.whyHeading}</div>
+                <ul className="why-list">
+                  {sim.why.map((w,i)=>(
+                    <li key={i}><Icon name="check" width="14" height="14" />{w}</li>
+                  ))}
+                </ul>
+                <div className="why-title" style={{marginTop:14}}><Icon name="bolt" width="14" height="14" />Recommended actions</div>
+                <ul className="why-list">
+                  {sim.recommended.map((w,i)=>(
+                    <li key={i}><Icon name="check" width="14" height="14" />{w}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+
+          <div className="panel">
+            <div style={{display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:14}}>
+              <div className="panel-title" style={{marginBottom:0}}>Real-time event feed</div>
+              <button className="btn-clear" onClick={()=>setFeed([])}><Icon name="trash" width="12" height="12" /> Clear</button>
+            </div>
+            <div className="feed">
+              {feed.length === 0 && <div className="empty-state" style={{padding:"24px 0"}}>No events yet. Run a simulation, or interact with the patient portal in another tab.</div>}
+              {feed.map((item, i)=><FeedItem item={item} key={i} />)}
+            </div>
+          </div>
+
+          <div className="footer-note">CareX Simulation Center · For internal demos and stakeholder walkthroughs only · Shares the same event bus as the patient portal</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
