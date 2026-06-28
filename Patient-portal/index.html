@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+  !function(){var i="analytics",analytics=window[i]=window[i]||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","screen","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware","register"];analytics.factory=function(e){return function(){if(window[i].initialized)return window[i][e].apply(window[i],arguments);var n=Array.prototype.slice.call(arguments);if(["track","screen","alias","group","page","identify"].indexOf(e)>-1){var c=document.querySelector("link[rel='canonical']");n.push({__t:"bpc",c:c&&c.getAttribute("href")||void 0,p:location.pathname,u:location.href,s:location.search,t:document.title,r:document.referrer})}n.unshift(e);analytics.push(n);return analytics}};for(var n=0;n<analytics.methods.length;n++){var key=analytics.methods[n];analytics[key]=analytics.factory(key)}analytics.load=function(key,n){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.setAttribute("data-global-segment-analytics-key",i);t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r);analytics._loadOptions=n};analytics._writeKey="OuHHWC4DEeBiSqJj0mamaXIsiX8cHG7S";;analytics.SNIPPET_VERSION="5.2.0";
+  analytics.load("OuHHWC4DEeBiSqJj0mamaXIsiX8cHG7S");
+  analytics.page();
+  }}();
+</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CareX | Patient Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.28.4/babel.min.js"></script>
+<style>
+  :root{
+    --green:#16A34A;
+    --green-hover:#15803D;
+    --green-light:#DCFCE7;
+    --bg:#FFFFFF;
+    --bg-alt:#F8FAF8;
+    --text:#111827;
+    --text-secondary:#6B7280;
+    --border:#E5E7EB;
+    --success:#22C55E;
+    --warning:#F59E0B;
+    --error:#EF4444;
+    --card:#F3F4F6;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg-alt);color:var(--text);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;}
+  ::-webkit-scrollbar{width:8px;height:8px;}
+  ::-webkit-scrollbar-thumb{background:#D1D5DB;border-radius:8px;}
+
+  .app{min-height:100vh;display:flex;flex-direction:column;}
+
+  /* ---- Top Nav ---- */
+  .topbar{
+    background:var(--bg);border-bottom:1px solid var(--border);
+    position:sticky;top:0;z-index:50;
+  }
+  .topbar-inner{
+    max-width:1280px;margin:0 auto;padding:0 24px;
+    display:flex;align-items:center;justify-content:space-between;height:64px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;letter-spacing:-0.02em;}
+  .brand-mark{
+    width:30px;height:30px;border-radius:8px;background:var(--green);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .brand-mark svg{width:16px;height:16px;}
+  .nav-links{display:flex;gap:4px;align-items:center;}
+  .nav-link{
+    padding:8px 14px;border-radius:8px;font-size:14px;font-weight:500;color:var(--text-secondary);
+    transition:background .15s, color .15s;
+  }
+  .nav-link:hover{background:var(--bg-alt);color:var(--text);}
+  .nav-link.active{background:var(--green-light);color:var(--green-hover);}
+  .nav-right{display:flex;align-items:center;gap:14px;}
+  .icon-btn{
+    width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:var(--bg);
+    display:flex;align-items:center;justify-content:center;position:relative;
+  }
+  .icon-btn:hover{background:var(--bg-alt);}
+  .dot-badge{
+    position:absolute;top:-3px;right:-3px;width:9px;height:9px;border-radius:50%;
+    background:var(--error);border:1.5px solid var(--bg);
+  }
+  .avatar{
+    width:36px;height:36px;border-radius:50%;background:var(--green);color:#fff;font-weight:600;font-size:14px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .mobile-toggle{display:none;}
+
+  /* ---- Layout ---- */
+  .page{max-width:1280px;margin:0 auto;padding:28px 24px 64px;width:100%;flex:1;}
+  .section{margin-bottom:32px;}
+  .section-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px;}
+  .section-title{font-size:17px;font-weight:600;letter-spacing:-0.01em;}
+  .section-link{font-size:13px;font-weight:600;color:var(--green-hover);}
+  .grid{display:grid;gap:16px;}
+  .grid-3{grid-template-columns:repeat(3,1fr);}
+  .grid-2{grid-template-columns:repeat(2,1fr);}
+  .grid-4{grid-template-columns:repeat(4,1fr);}
+  @media (max-width:900px){
+    .grid-3,.grid-4{grid-template-columns:repeat(2,1fr);}
+  }
+  @media (max-width:640px){
+    .grid-3,.grid-4,.grid-2{grid-template-columns:1fr;}
+  }
+
+  .card{
+    background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:18px;
+  }
+  .card-alt{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;}
+
+  .pill{
+    display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;
+    padding:3px 10px;border-radius:999px;
+  }
+  .pill-green{background:var(--green-light);color:var(--green-hover);}
+  .pill-amber{background:#FEF3C7;color:#92400E;}
+  .pill-red{background:#FEE2E2;color:#991B1B;}
+  .pill-gray{background:#F3F4F6;color:var(--text-secondary);}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    border-radius:9px;padding:9px 16px;font-size:13.5px;font-weight:600;border:1px solid transparent;
+    transition:background .15s,border-color .15s, transform .1s;
+  }
+  .btn:active{transform:scale(0.98);}
+  .btn-primary{background:var(--green);color:#fff;}
+  .btn-primary:hover{background:var(--green-hover);}
+  .btn-secondary{background:var(--bg);color:var(--text);border-color:var(--border);}
+  .btn-secondary:hover{background:var(--bg-alt);}
+  .btn-ghost{background:transparent;color:var(--green-hover);}
+  .btn-ghost:hover{background:var(--green-light);}
+  .btn-sm{padding:6px 12px;font-size:12.5px;}
+  .btn-block{width:100%;}
+
+  /* ---- Hero ---- */
+  .hero{
+    background:linear-gradient(135deg, #103A22 0%, #14532D 38%, #16A34A 100%);
+    border-radius:18px;padding:28px 30px;color:#fff;position:relative;overflow:hidden;margin-bottom:28px;
+  }
+  .hero::after{
+    content:"";position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;
+    background:radial-gradient(circle, rgba(255,255,255,0.10), transparent 70%);
+  }
+  .hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;}
+  .hero-greeting{font-size:23px;font-weight:700;letter-spacing:-0.01em;}
+  .hero-sub{font-size:13.5px;color:rgba(255,255,255,0.78);margin-top:4px;max-width:480px;}
+  .hero-stats{display:flex;gap:22px;margin-top:20px;flex-wrap:wrap;}
+  .hero-stat-num{font-size:20px;font-weight:700;}
+  .hero-stat-label{font-size:11.5px;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:.04em;margin-top:2px;}
+  .hero-cta{background:#fff;color:var(--green-hover);}
+  .hero-cta:hover{background:#F0FDF4;}
+
+  /* ---- Appointment / list rows ---- */
+  .row{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid var(--border);}
+  .row:last-child{border-bottom:none;}
+  .row-avatar{
+    width:42px;height:42px;border-radius:10px;background:var(--green-light);color:var(--green-hover);
+    font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .row-main{flex:1;min-width:0;}
+  .row-title{font-size:14px;font-weight:600;}
+  .row-sub{font-size:12.5px;color:var(--text-secondary);margin-top:2px;}
+  .row-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+
+  /* Pending actions */
+  .action-item{
+    display:flex;align-items:flex-start;gap:12px;padding:14px;border-radius:12px;border:1px solid var(--border);margin-bottom:10px;
+  }
+  .action-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .action-icon svg{width:17px;height:17px;}
+
+  /* Program card */
+  .program-card{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--bg);}
+  .program-banner{height:6px;background:var(--green);}
+  .program-body{padding:18px;}
+  .program-title{font-size:15px;font-weight:600;margin-bottom:4px;}
+  .program-desc{font-size:12.5px;color:var(--text-secondary);line-height:1.5;margin-bottom:12px;}
+
+  /* doctors */
+  .filters-bar{
+    display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;background:var(--bg);border:1px solid var(--border);
+    border-radius:14px;padding:14px;align-items:center;
+  }
+  .input{
+    border:1px solid var(--border);border-radius:9px;padding:9px 12px;font-size:13.5px;font-family:inherit;background:var(--bg);color:var(--text);
+  }
+  .input:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px var(--green-light);}
+  select.input{appearance:none;}
+  .search-input{flex:1;min-width:180px;}
+
+  .doctor-card{
+    background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px;
+  }
+  .doctor-top{display:flex;gap:12px;align-items:flex-start;}
+  .doctor-photo{
+    width:54px;height:54px;border-radius:12px;background:var(--green-light);color:var(--green-hover);
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;flex-shrink:0;
+  }
+  .doctor-name{font-size:15px;font-weight:600;}
+  .doctor-spec{font-size:12.5px;color:var(--green-hover);font-weight:600;margin-top:1px;}
+  .doctor-meta{font-size:12px;color:var(--text-secondary);margin-top:6px;display:flex;flex-direction:column;gap:3px;}
+  .doctor-meta span{display:flex;align-items:center;gap:6px;}
+
+  /* tabs */
+  .tabbar{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:20px;overflow-x:auto;}
+  .tab{
+    padding:10px 4px;margin-right:22px;font-size:13.5px;font-weight:600;color:var(--text-secondary);
+    border-bottom:2px solid transparent;white-space:nowrap;
+  }
+  .tab.active{color:var(--green-hover);border-color:var(--green);}
+
+  /* timeline */
+  .timeline{position:relative;padding-left:26px;}
+  .timeline::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--border);}
+  .timeline-item{position:relative;padding-bottom:22px;}
+  .timeline-item:last-child{padding-bottom:0;}
+  .timeline-dot{position:absolute;left:-26px;top:2px;width:14px;height:14px;border-radius:50%;background:var(--green);border:3px solid var(--green-light);}
+  .timeline-dot.muted{background:#D1D5DB;border-color:#F3F4F6;}
+  .timeline-date{font-size:11.5px;color:var(--text-secondary);font-weight:600;text-transform:uppercase;letter-spacing:.03em;}
+  .timeline-title{font-size:14px;font-weight:600;margin-top:2px;}
+  .timeline-desc{font-size:12.5px;color:var(--text-secondary);margin-top:2px;}
+
+  /* modal */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(17,24,39,.5);display:flex;align-items:center;justify-content:center;
+    z-index:100;padding:20px;
+  }
+  .modal{
+    background:#fff;border-radius:16px;max-width:460px;width:100%;padding:24px;max-height:90vh;overflow-y:auto;
+  }
+  .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+  .modal-title{font-size:16px;font-weight:700;}
+  .close-x{width:30px;height:30px;border-radius:8px;border:none;background:var(--bg-alt);display:flex;align-items:center;justify-content:center;}
+  .field{margin-bottom:14px;}
+  .field label{font-size:12.5px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:6px;}
+
+  .toast{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#111827;color:#fff;
+    padding:12px 20px;border-radius:10px;font-size:13.5px;font-weight:500;z-index:200;display:flex;align-items:center;gap:8px;
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+  }
+
+  .empty{text-align:center;padding:36px 20px;color:var(--text-secondary);font-size:13.5px;}
+
+  .footer-note{text-align:center;font-size:11.5px;color:var(--text-secondary);padding:18px 0 0;}
+
+  /* ---- CDP banner (single active personalization banner) ---- */
+  .cdp-banner{
+    display:flex;align-items:center;gap:14px;background:var(--bg);border:1px solid var(--border);
+    border-left:4px solid var(--green);border-radius:14px;padding:16px 18px;margin-bottom:20px;
+    animation:bannerIn .25s ease;
+  }
+  @keyframes bannerIn{from{opacity:0; transform:translateY(-6px);} to{opacity:1; transform:translateY(0);}}
+  .cdp-banner-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .cdp-banner-title{font-size:14.5px;font-weight:700;}
+  .cdp-banner-msg{font-size:12.5px;color:var(--text-secondary);margin-top:2px;}
+  .cdp-banner-tag{font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--green-hover);background:var(--green-light);padding:2px 8px;border-radius:999px;margin-bottom:4px;display:inline-block;}
+
+  /* ---- Auth (login / signup) ---- */
+  .auth-shell{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg-alt);padding:24px;}
+  .auth-card{background:var(--bg);border:1px solid var(--border);border-radius:18px;padding:34px 32px;width:100%;max-width:400px;}
+  .auth-brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;margin-bottom:22px;justify-content:center;}
+  .auth-title{font-size:19px;font-weight:700;text-align:center;}
+  .auth-sub{font-size:13px;color:var(--text-secondary);text-align:center;margin-top:4px;margin-bottom:22px;}
+  .auth-switch{font-size:13px;color:var(--text-secondary);text-align:center;margin-top:16px;}
+  .auth-switch a{color:var(--green-hover);font-weight:600;cursor:pointer;}
+  .auth-error{font-size:12.5px;color:var(--error);background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:8px 10px;margin-bottom:14px;}
+  .logout-link{font-size:12.5px;font-weight:600;color:var(--text-secondary);cursor:pointer;padding:8px 4px;}
+  .logout-link:hover{color:var(--error);}
+
+  /* mobile nav */
+  @media (max-width:860px){
+    .nav-links{display:none;}
+    .mobile-toggle{display:flex;}
+    .mobile-menu{
+      position:fixed;top:64px;left:0;right:0;background:#fff;border-bottom:1px solid var(--border);
+      display:flex;flex-direction:column;padding:8px;z-index:60;box-shadow:0 12px 24px rgba(0,0,0,.06);
+    }
+    .mobile-menu .nav-link{padding:12px 14px;}
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef, useMemo } = React;
+
+/* ============================================================
+   SILENT TRACKING LAYER
+   Placeholder analytics hooks for future Segment / CDP wiring.
+   Every call is silent — nothing renders in the UI.
+   Events are persisted to localStorage and broadcast over a
+   BroadcastChannel so other CareX surfaces (e.g. the internal
+   Simulation Center) can observe them in real time.
+   ============================================================ */
+const EVENT_STORE_KEY = "carex_event_log";
+const CHANNEL_NAME = "carex_events";
+const bc = ("BroadcastChannel" in window) ? new BroadcastChannel(CHANNEL_NAME) : null;
+
+function getSessionId(){
+  let sid = sessionStorage.getItem("carex_session_id");
+  if(!sid){
+    sid = "sess_" + Math.random().toString(36).slice(2, 10);
+    sessionStorage.setItem("carex_session_id", sid);
+  }
+  return sid;
+}
+
+function trackEvent(eventName, properties = {}){
+  try{
+    const payload = {
+      event: eventName,
+      properties,
+      sessionId: getSessionId(),
+      source: "carex_patient_portal",
+      timestamp: new Date().toISOString(),
+    };
+    const existing = JSON.parse(localStorage.getItem(EVENT_STORE_KEY) || "[]");
+    existing.push(payload);
+    // keep the log bounded
+    localStorage.setItem(EVENT_STORE_KEY, JSON.stringify(existing.slice(-500)));
+    if(bc) bc.postMessage(payload);
+    // Fire the real Segment event. analytics.js is loaded in <head>.
+    if(window.analytics && typeof window.analytics.track === "function"){
+      window.analytics.track(eventName, properties);
+    }
+  }catch(e){ /* tracking must never break the UX */ }
+}
+
+/* ============================================================
+   SAMPLE DATA
+   ============================================================ */
+const PATIENT = {
+  age: 52,
+  gender: "Female",
+  patientId: "CRX-10482",
+  city: "Chennai",
+  bloodGroup: "B+",
+  memberSince: "2021",
+};
+
+/* ============================================================
+   DYNAMIC USER PROFILE (login / signup / profile page)
+   The signed-in user's name & details are stored in localStorage
+   instead of a hardcoded default, so whatever the patient enters
+   at signup (or edits later in Profile) is what's shown everywhere.
+   ============================================================ */
+const USER_STORAGE_KEY = "carex_user_profile";
+
+function loadUser(){
+  try{
+    const raw = localStorage.getItem(USER_STORAGE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return null;
+}
+
+function saveUser(user){
+  try{ localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user)); }catch(e){}
+}
+
+function nameFromEmail(email){
+  const handle = (email || "").split("@")[0] || "Patient";
+  return handle
+    .replace(/[._-]+/g, " ")
+    .split(" ")
+    .filter(Boolean)
+    .map(w => w[0].toUpperCase() + w.slice(1))
+    .join(" ") || "Patient";
+}
+
+function getFirstName(name){
+  return ((name || "Patient").trim().split(" ")[0]) || "Patient";
+}
+
+function getInitials(name){
+  const parts = (name || "Patient").trim().split(" ").filter(Boolean);
+  if(parts.length === 0) return "P";
+  if(parts.length === 1) return parts[0].slice(0,2).toUpperCase();
+  return (parts[0][0] + parts[1][0]).toUpperCase();
+}
+
+const DOCTORS = [
+  { id:"d1", name:"Dr. Ramesh Subramanian", specialty:"Cardiology", location:"Anna Nagar, Chennai", experience:18, rating:4.8, availability:"Mon, Wed, Fri", fee:900 },
+  { id:"d2", name:"Dr. Anjali Verma", specialty:"Endocrinology", location:"Adyar, Chennai", experience:12, rating:4.9, availability:"Tue, Thu, Sat", fee:800 },
+  { id:"d3", name:"Dr. Karthik Iyer", specialty:"Internal Medicine", location:"T Nagar, Chennai", experience:9, rating:4.6, availability:"Mon–Sat", fee:600 },
+  { id:"d4", name:"Dr. Meera Pillai", specialty:"Nephrology", location:"Velachery, Chennai", experience:15, rating:4.7, availability:"Wed, Fri, Sat", fee:850 },
+  { id:"d5", name:"Dr. Suresh Nair", specialty:"Orthopedics", location:"Nungambakkam, Chennai", experience:20, rating:4.8, availability:"Mon, Tue, Thu", fee:750 },
+  { id:"d6", name:"Dr. Priya Raghavan", specialty:"Nutrition & Dietetics", location:"Adyar, Chennai", experience:7, rating:4.7, availability:"Tue, Wed, Fri", fee:500 },
+  { id:"d7", name:"Dr. Vikram Chowdhury", specialty:"Pulmonology", location:"Mylapore, Chennai", experience:11, rating:4.5, availability:"Mon, Wed, Sat", fee:700 },
+  { id:"d8", name:"Dr. Divya Krishnamurthy", specialty:"Gynecology", location:"Besant Nagar, Chennai", experience:14, rating:4.9, availability:"Tue, Thu, Fri", fee:800 },
+];
+
+const SPECIALTIES = ["All Specialties", ...new Set(DOCTORS.map(d=>d.specialty))];
+const LOCATIONS = ["All Locations", ...new Set(DOCTORS.map(d=>d.location.split(", ")[0]))];
+
+const UPCOMING_APPOINTMENTS = [
+  { id:"a101", doctor:"Dr. Anjali Verma", specialty:"Endocrinology", date:"28 Jun 2026", time:"10:30 AM", mode:"In-person", location:"CareX Adyar Centre" },
+];
+
+const APPOINTMENT_HISTORY = [
+  { id:"a098", doctor:"Dr. Ramesh Subramanian", specialty:"Cardiology", date:"21 May 2026", time:"5:00 PM", status:"Completed", notes:"Routine cardiac evaluation. Follow-up advised in 30 days." },
+  { id:"a085", doctor:"Dr. Karthik Iyer", specialty:"Internal Medicine", date:"02 Apr 2026", time:"11:00 AM", status:"Completed", notes:"General check-up. Lipid profile recommended." },
+  { id:"a071", doctor:"Dr. Anjali Verma", specialty:"Endocrinology", date:"14 Feb 2026", time:"9:30 AM", status:"Completed", notes:"Diabetes risk assessment. HbA1c test advised." },
+];
+
+const RECOMMENDED_TESTS = [
+  { id:"t1", name:"Lipid Profile", recommendedBy:"Dr. Karthik Iyer", recommendedOn:"02 Apr 2026", status:"Pending", reason:"Routine cardiovascular risk screening" },
+  { id:"t2", name:"HbA1c (Glycated Haemoglobin)", recommendedBy:"Dr. Anjali Verma", recommendedOn:"14 Feb 2026", status:"Pending", reason:"Diabetes risk assessment follow-through" },
+];
+
+const TEST_HISTORY = [
+  { id:"t0", name:"Complete Blood Count", date:"02 Apr 2026", status:"Completed", report:"available" },
+  { id:"t00", name:"ECG", date:"21 May 2026", status:"Completed", report:"available" },
+];
+
+const HEALTH_PACKAGES = [
+  { id:"p1", name:"Cardiac Screening Package", desc:"ECG, Lipid Profile, 2D Echo, Cardiologist Consult", price:"₹3,499" },
+  { id:"p2", name:"Full Body Checkup", desc:"75+ parameters across cardiac, liver, kidney & thyroid panels", price:"₹2,999" },
+  { id:"p3", name:"Diabetes Panel", desc:"HbA1c, Fasting & PP Glucose, Nutritionist Consult", price:"₹1,799" },
+];
+
+const CARE_PROGRAMS = [
+  {
+    id:"diabetes", name:"Diabetes Care Program",
+    overview:"A structured 12-month program combining endocrinology, nutrition coaching and continuous glucose tracking to keep HbA1c within target range.",
+    benefits:["Quarterly HbA1c & lipid tracking","Dedicated nutrition coaching","Dose review every 90 days","24/7 care coordinator access"],
+    doctors:["Dr. Anjali Verma","Dr. Priya Raghavan"],
+    recommended:true,
+  },
+  {
+    id:"cardiac", name:"Cardiac Care Program",
+    overview:"Ongoing cardiovascular risk management for patients with hypertension, prior cardiac events, or high-risk lipid profiles.",
+    benefits:["Structured follow-up cadence","Home BP monitoring kit","Annual 2D Echo & stress test","Cardiologist tele-rounds"],
+    doctors:["Dr. Ramesh Subramanian"],
+    recommended:true,
+  },
+  {
+    id:"hypertension", name:"Hypertension Management",
+    overview:"Continuous blood pressure management combining medication titration, lifestyle coaching, and remote monitoring.",
+    benefits:["Remote BP monitoring","Monthly physician review","Salt & lifestyle coaching","Medication adherence support"],
+    doctors:["Dr. Karthik Iyer","Dr. Ramesh Subramanian"],
+    recommended:false,
+  },
+  {
+    id:"weight", name:"Weight Management",
+    overview:"A clinically supervised program for sustainable weight management combining nutrition, metabolic screening and activity coaching.",
+    benefits:["Metabolic panel every 90 days","1:1 nutrition coaching","Activity & sleep tracking","Behavioural coaching sessions"],
+    doctors:["Dr. Priya Raghavan","Dr. Anjali Verma"],
+    recommended:false,
+  },
+];
+
+const ACTIVE_CARE_PLANS = [
+  { id:"cp1", name:"Hypertension Monitoring Plan", since:"Mar 2025", status:"Active" },
+];
+
+const RECENT_ACTIVITY = [
+  { id:"r1", text:"Cardiology consultation completed with Dr. Ramesh Subramanian", date:"21 May 2026" },
+  { id:"r2", text:"Lipid Profile recommended by Dr. Karthik Iyer", date:"02 Apr 2026" },
+  { id:"r3", text:"HbA1c test recommended by Dr. Anjali Verma", date:"14 Feb 2026" },
+  { id:"r4", text:"Annual full body checkup report uploaded", date:"30 Jan 2026" },
+];
+
+/* days elapsed since cardiology follow-up was recommended (21 May 2026 + 30 days = 20 Jun 2026; "today" is 25 Jun 2026 => 5 days overdue) */
+const FOLLOWUP_DAYS_OVERDUE = 5;
+
+/* ============================================================
+   CDP -> HOMEPAGE BANNER MAP
+   Only ONE of these is ever shown at a time. The Simulation
+   Center (simulator.html) fires these exact event names over the
+   shared BroadcastChannel / localStorage bus; whichever fires last
+   wins and replaces whatever banner was showing before.
+   ============================================================ */
+const BANNER_CONFIG = {
+  missed_followup: {
+    tag: "Follow-Up Leakage",
+    title: "Follow-Up Missed",
+    message: "Your cardiology follow-up consultation is overdue. Book now to stay on track with your care plan.",
+    icon: "alert", iconBg: "#FEE2E2", iconColor: "var(--error)",
+    cta: "Book Now",
+    openKey: "booking",
+  },
+  diagnostic_dropoff: {
+    tag: "Diagnostic Drop-Off",
+    title: "Recommended Blood Test",
+    message: "A blood test recommended by your doctor hasn't been booked yet.",
+    icon: "flask", iconBg: "#FEF3C7", iconColor: "var(--warning)",
+    cta: "Book Test",
+    openKey: "test",
+  },
+  diabetes_candidate: {
+    tag: "Care Program Match",
+    title: "Diabetes Program",
+    message: "Based on your recent activity, our Diabetes Program may be a great fit for your ongoing care.",
+    icon: "heart", iconBg: "var(--green-light)", iconColor: "var(--green-hover)",
+    cta: "Enroll Now",
+    openKey: "enroll",
+    programId: "diabetes",
+  },
+  cardiac_candidate: {
+    tag: "Care Program Match",
+    title: "Cardiac Program",
+    message: "Based on your recent activity, our Cardiac Program may be a great fit for your ongoing care.",
+    icon: "heart", iconBg: "var(--green-light)", iconColor: "var(--green-hover)",
+    cta: "Enroll Now",
+    openKey: "enroll",
+    programId: "cardiac",
+  },
+};
+const BANNER_STORAGE_KEY = "carex_active_banner";
+
+/* ============================================================
+   SHARED UI BITS
+   ============================================================ */
+function Icon({ name, ...props }){
+  const paths = {
+    home: "M3 11.5 12 4l9 7.5M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9",
+    doctors: "M16 11a4 4 0 1 0-8 0M2 20c0-3.5 3-6 6-6h0M22 20c0-3.5-3-6-6-6h0M9 21v-1a3 3 0 0 1 3-3h0a3 3 0 0 1 3 3v1",
+    calendar: "M7 3v3M17 3v3M4 8h16M5 5h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z",
+    flask: "M9 2h6M10 2v6.5L4.5 18a2 2 0 0 0 1.7 3h11.6a2 2 0 0 0 1.7-3L14 8.5V2",
+    heart: "M12 21s-7-4.6-9.5-9.1C.7 8.4 2.2 4.9 5.6 4.1 8 3.6 10 4.8 12 7c2-2.2 4-3.4 6.4-2.9 3.4.8 4.9 4.3 3.1 7.8C19 16.4 12 21 12 21Z",
+    portal: "M4 4h16v16H4Zm0 6h16M10 4v16",
+    user: "M20 21a8 8 0 1 0-16 0M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z",
+    bell: "M9 17h6M5 17h14l-1.4-2A6 6 0 0 1 17 12V9a5 5 0 0 0-10 0v3a6 6 0 0 1-.6 3Z",
+    chevron: "m9 18 6-6-6-6",
+    search: "M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16ZM21 21l-4.3-4.3",
+    check: "M20 6 9 17l-5-5",
+    clock: "M12 7v5l3 3M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z",
+    alert: "M12 9v4M12 17h.01M10.3 3.9 2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z",
+    star: "m12 3 2.6 5.6 6.2.6-4.6 4.2 1.3 6.1L12 16.7 6.5 19.5l1.3-6.1L3.2 9.2l6.2-.6Z",
+    pin: "M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21ZM12 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z",
+    menu: "M3 6h18M3 12h18M3 18h18",
+    x: "M18 6 6 18M6 6l12 12",
+    upload: "M12 16V4m0 0 4 4m-4-4-4 4M5 20h14",
+    arrow: "M5 12h14M13 6l6 6-6 6",
+  };
+  const d = paths[name] || "";
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d={d}/>
+    </svg>
+  );
+}
+
+function BrandMark(){
+  return (
+    <div className="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 12c2.5 0 3-3 5-3s2.5 3 5 3 2.5-3 5-3" />
+        <path d="M4 12a8 8 0 1 0 16 0" />
+      </svg>
+    </div>
+  );
+}
+
+function Pill({ tone="gray", children }){
+  return <span className={`pill pill-${tone}`}>{children}</span>;
+}
+
+function CdpBanner({ bannerKey, onCta }){
+  const cfg = BANNER_CONFIG[bannerKey];
+  if(!cfg) return null;
+  return (
+    <div className="cdp-banner">
+      <div className="cdp-banner-icon" style={{background:cfg.iconBg}}>
+        <Icon name={cfg.icon} width="19" height="19" style={{color:cfg.iconColor}} />
+      </div>
+      <div style={{flex:1}}>
+        <span className="cdp-banner-tag">{cfg.tag}</span>
+        <div className="cdp-banner-title">{cfg.title}</div>
+        <div className="cdp-banner-msg">{cfg.message}</div>
+      </div>
+      <button className="btn btn-primary btn-sm" onClick={onCta}>{cfg.cta}</button>
+    </div>
+  );
+}
+
+function Toast({ message, onDone }){
+  useEffect(()=>{
+    const t = setTimeout(onDone, 2600);
+    return ()=>clearTimeout(t);
+  },[]);
+  return (
+    <div className="toast">
+      <Icon name="check" width="15" height="15" />
+      {message}
+    </div>
+  );
+}
+
+/* ============================================================
+   BOOKING MODAL (consultation)
+   ============================================================ */
+function BookConsultationModal({ doctor, onClose, onConfirmed }){
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [reason, setReason] = useState("");
+
+  useEffect(()=>{
+    trackEvent("appointment_booking_started", { doctorId: doctor.id, doctorName: doctor.name, specialty: doctor.specialty });
+  },[]);
+
+  const confirm = () => {
+    if(!date || !time) return;
+    trackEvent("appointment_booked", {
+      doctorId: doctor.id, doctorName: doctor.name, specialty: doctor.specialty,
+      date, time, reason,
+    });
+    onConfirmed(`Consultation booked with ${doctor.name} on ${date} at ${time}`);
+    onClose();
+  };
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal" onClick={e=>e.stopPropagation()}>
+        <div className="modal-head">
+          <div className="modal-title">Book Consultation</div>
+          <button className="close-x" onClick={onClose}><Icon name="x" width="15" height="15" /></button>
+        </div>
+        <div className="row" style={{paddingTop:0}}>
+          <div className="row-avatar">{doctor.name.split(" ").slice(-1)[0][0]}</div>
+          <div className="row-main">
+            <div className="row-title">{doctor.name}</div>
+            <div className="row-sub">{doctor.specialty} · {doctor.location}</div>
+          </div>
+        </div>
+        <div className="field" style={{marginTop:14}}>
+          <label>Preferred date</label>
+          <input className="input" style={{width:"100%"}} type="date" value={date} onChange={e=>setDate(e.target.value)} />
+        </div>
+        <div className="field">
+          <label>Preferred time slot</label>
+          <select className="input" style={{width:"100%"}} value={time} onChange={e=>setTime(e.target.value)}>
+            <option value="">Select a slot</option>
+            <option>9:00 AM</option>
+            <option>10:30 AM</option>
+            <option>2:00 PM</option>
+            <option>4:30 PM</option>
+            <option>6:00 PM</option>
+          </select>
+        </div>
+        <div className="field">
+          <label>Reason for visit (optional)</label>
+          <input className="input" style={{width:"100%"}} placeholder="e.g. Follow-up review" value={reason} onChange={e=>setReason(e.target.value)} />
+        </div>
+        <button className="btn btn-primary btn-block" onClick={confirm}>Confirm booking</button>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   BOOK TEST MODAL
+   ============================================================ */
+function BookTestModal({ test, onClose, onConfirmed }){
+  const [date, setDate] = useState("");
+  const [center, setCenter] = useState("CareX Adyar Diagnostics Centre");
+
+  useEffect(()=>{
+    trackEvent("test_booking_started", { testId: test.id, testName: test.name });
+  },[]);
+
+  const confirm = () => {
+    if(!date) return;
+    trackEvent("test_booked", { testId: test.id, testName: test.name, date, center });
+    onConfirmed(`${test.name} booked for ${date}`);
+    onClose();
+  };
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal" onClick={e=>e.stopPropagation()}>
+        <div className="modal-head">
+          <div className="modal-title">Book Test</div>
+          <button className="close-x" onClick={onClose}><Icon name="x" width="15" height="15" /></button>
+        </div>
+        <div className="row" style={{paddingTop:0}}>
+          <div className="row-avatar"><Icon name="flask" width="18" height="18" /></div>
+          <div className="row-main">
+            <div className="row-title">{test.name}</div>
+            <div className="row-sub">Recommended by {test.recommendedBy}</div>
+          </div>
+        </div>
+        <div className="field" style={{marginTop:14}}>
+          <label>Preferred date</label>
+          <input className="input" style={{width:"100%"}} type="date" value={date} onChange={e=>setDate(e.target.value)} />
+        </div>
+        <div className="field">
+          <label>Diagnostic centre</label>
+          <select className="input" style={{width:"100%"}} value={center} onChange={e=>setCenter(e.target.value)}>
+            <option>CareX Adyar Diagnostics Centre</option>
+            <option>CareX Anna Nagar Diagnostics Centre</option>
+            <option>CareX Velachery Diagnostics Centre</option>
+          </select>
+        </div>
+        <button className="btn btn-primary btn-block" onClick={confirm}>Confirm booking</button>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   ENROLL PROGRAM MODAL
+   ============================================================ */
+function EnrollModal({ program, onClose, onConfirmed }){
+  useEffect(()=>{
+    trackEvent("program_enrollment_started", { programId: program.id, programName: program.name });
+  },[]);
+  const confirm = () => {
+    trackEvent("program_enrolled", { programId: program.id, programName: program.name });
+    onConfirmed(`Enrolled in ${program.name}`);
+    onClose();
+  };
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal" onClick={e=>e.stopPropagation()}>
+        <div className="modal-head">
+          <div className="modal-title">Confirm Enrollment</div>
+          <button className="close-x" onClick={onClose}><Icon name="x" width="15" height="15" /></button>
+        </div>
+        <p style={{fontSize:13.5, color:"var(--text-secondary)", lineHeight:1.6, marginBottom:16}}>
+          You're enrolling in the <strong style={{color:"var(--text)"}}>{program.name}</strong>. A care coordinator
+          will reach out within 24 hours to schedule your first session.
+        </p>
+        <button className="btn btn-primary btn-block" onClick={confirm}>Confirm enrollment</button>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   PAGES
+   ============================================================ */
+function HomePage({ navigate, openBooking, openTestBooking, openEnroll, activeBanner, onBannerCta, user }){
+  const overdueFollowup = FOLLOWUP_DAYS_OVERDUE > 0;
+
+  return (
+    <div>
+      {activeBanner && <CdpBanner bannerKey={activeBanner} onCta={()=>onBannerCta(activeBanner)} />}
+      <div className="hero">
+        <div className="hero-top">
+          <div>
+            <div className="hero-greeting">{user && user.name && user.name.trim() ? `Good afternoon, ${getFirstName(user.name)}` : "Good afternoon, please sign up to continue"}</div>
+            <div className="hero-sub">Here's where things stand with your care today. You have 1 upcoming appointment and 2 items that need your attention.</div>
+          </div>
+          <button className="btn hero-cta" onClick={()=>navigate("doctors")}>
+            <Icon name="calendar" width="15" height="15" /> Book a consultation
+          </button>
+        </div>
+        <div className="hero-stats">
+          <div><div className="hero-stat-num">1</div><div className="hero-stat-label">Upcoming visit</div></div>
+          <div><div className="hero-stat-num">2</div><div className="hero-stat-label">Pending diagnostics</div></div>
+          <div><div className="hero-stat-num">1</div><div className="hero-stat-label">Active care plan</div></div>
+          <div><div className="hero-stat-num">5</div><div className="hero-stat-label">Years with CareX</div></div>
+        </div>
+      </div>
+
+      <div className="grid grid-2" style={{alignItems:"start"}}>
+        <div className="section">
+          <div className="section-head">
+            <div className="section-title">Upcoming appointments</div>
+            <a className="section-link" onClick={()=>navigate("appointments")}>View all</a>
+          </div>
+          <div className="card">
+            {UPCOMING_APPOINTMENTS.map(a=>(
+              <div className="row" key={a.id}>
+                <div className="row-avatar"><Icon name="calendar" width="17" height="17" /></div>
+                <div className="row-main">
+                  <div className="row-title">{a.doctor}</div>
+                  <div className="row-sub">{a.specialty} · {a.date} at {a.time} · {a.mode}</div>
+                </div>
+                <div className="row-right"><Pill tone="green">Confirmed</Pill></div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="section">
+          <div className="section-head">
+            <div className="section-title">Welcome</div>
+          </div>
+          <div className="card-alt" style={{display:"flex", flexDirection:"column", justifyContent:"center", height:"100%"}}>
+            <div className="row-title" style={{fontSize:15}}>Hi {getFirstName(user.name)}, good to see you 👋</div>
+            <div className="row-sub" style={{marginTop:6, lineHeight:1.6}}>
+              This is your personal care space. Anything that needs your attention will show up right here on your homepage.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="section">
+        <div className="section-head">
+          <div className="section-title">Recommended for you</div>
+          <a className="section-link" onClick={()=>navigate("programs")}>View all programs</a>
+        </div>
+        <div className="grid grid-2">
+          {CARE_PROGRAMS.filter(p=>p.recommended).map(p=>(
+            <div className="program-card" key={p.id}>
+              <div className="program-banner"></div>
+              <div className="program-body">
+                <div style={{display:"flex", justifyContent:"space-between", alignItems:"flex-start"}}>
+                  <div className="program-title">{p.name}</div>
+                  <Pill tone="green">Recommended</Pill>
+                </div>
+                <div className="program-desc">{p.overview}</div>
+                <button className="btn btn-secondary btn-sm" onClick={()=>{ trackEvent("program_viewed", {programId:p.id, programName:p.name}); navigate("programs"); }}>
+                  Learn more
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid grid-2" style={{alignItems:"start"}}>
+        <div className="section">
+          <div className="section-head"><div className="section-title">Health packages for you</div></div>
+          <div className="card" style={{display:"flex", flexDirection:"column", gap:0}}>
+            {HEALTH_PACKAGES.map(pkg=>(
+              <div className="row" key={pkg.id}>
+                <div className="row-avatar"><Icon name="heart" width="17" height="17" /></div>
+                <div className="row-main">
+                  <div className="row-title">{pkg.name}</div>
+                  <div className="row-sub">{pkg.desc}</div>
+                </div>
+                <div className="row-right" style={{flexDirection:"column", alignItems:"flex-end", gap:6}}>
+                  <div style={{fontSize:13, fontWeight:700}}>{pkg.price}</div>
+                  <button className="btn btn-ghost btn-sm">View</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="section">
+          <div className="section-head"><div className="section-title">Active care plans</div></div>
+          <div className="card">
+            {ACTIVE_CARE_PLANS.map(cp=>(
+              <div className="row" key={cp.id}>
+                <div className="row-avatar"><Icon name="portal" width="17" height="17" /></div>
+                <div className="row-main">
+                  <div className="row-title">{cp.name}</div>
+                  <div className="row-sub">Active since {cp.since}</div>
+                </div>
+                <Pill tone="green">{cp.status}</Pill>
+              </div>
+            ))}
+          </div>
+          <div className="section-head" style={{marginTop:20}}><div className="section-title">Recent activity</div></div>
+          <div className="card">
+            {RECENT_ACTIVITY.map(r=>(
+              <div className="row" key={r.id}>
+                <div className="row-avatar" style={{background:"var(--card)", color:"var(--text-secondary)"}}><Icon name="clock" width="15" height="15" /></div>
+                <div className="row-main">
+                  <div className="row-title" style={{fontWeight:500}}>{r.text}</div>
+                  <div className="row-sub">{r.date}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DoctorsPage({ openBooking }){
+  const [query, setQuery] = useState("");
+  const [specialty, setSpecialty] = useState("All Specialties");
+  const [location, setLocation] = useState("All Locations");
+  const [sort, setSort] = useState("experience");
+
+  const filtered = useMemo(()=>{
+    return DOCTORS.filter(d=>{
+      const matchesQuery = d.name.toLowerCase().includes(query.toLowerCase()) || d.specialty.toLowerCase().includes(query.toLowerCase());
+      const matchesSpecialty = specialty === "All Specialties" || d.specialty === specialty;
+      const matchesLocation = location === "All Locations" || d.location.startsWith(location);
+      return matchesQuery && matchesSpecialty && matchesLocation;
+    }).sort((a,b)=> sort==="experience" ? b.experience - a.experience : b.rating - a.rating);
+  },[query, specialty, location, sort]);
+
+  useEffect(()=>{
+    if(specialty !== "All Specialties") trackEvent("specialty_viewed", { specialty });
+  },[specialty]);
+
+  return (
+    <div>
+      <div className="section-head"><div className="section-title" style={{fontSize:20}}>Find a doctor</div></div>
+      <div className="filters-bar">
+        <div className="search-input" style={{position:"relative"}}>
+          <input className="input" style={{width:"100%", paddingLeft:34}} placeholder="Search by doctor name or specialty"
+            value={query} onChange={e=>setQuery(e.target.value)} />
+          <Icon name="search" width="15" height="15" style={{position:"absolute", left:11, top:10, color:"var(--text-secondary)"}} />
+        </div>
+        <select className="input" value={specialty} onChange={e=>setSpecialty(e.target.value)}>
+          {SPECIALTIES.map(s=><option key={s}>{s}</option>)}
+        </select>
+        <select className="input" value={location} onChange={e=>setLocation(e.target.value)}>
+          {LOCATIONS.map(l=><option key={l}>{l}</option>)}
+        </select>
+        <select className="input" value={sort} onChange={e=>setSort(e.target.value)}>
+          <option value="experience">Sort: Most experienced</option>
+          <option value="rating">Sort: Highest rated</option>
+        </select>
+      </div>
+
+      <div className="grid grid-3">
+        {filtered.map(d=>(
+          <div className="doctor-card" key={d.id}>
+            <div className="doctor-top">
+              <div className="doctor-photo">{d.name.split(" ").slice(-1)[0][0]}</div>
+              <div>
+                <div className="doctor-name">{d.name}</div>
+                <div className="doctor-spec">{d.specialty}</div>
+              </div>
+            </div>
+            <div className="doctor-meta">
+              <span><Icon name="pin" width="13" height="13" />{d.location}</span>
+              <span><Icon name="clock" width="13" height="13" />{d.experience} years experience</span>
+              <span><Icon name="star" width="13" height="13" />{d.rating} rating</span>
+              <span><Icon name="calendar" width="13" height="13" />Available {d.availability}</span>
+            </div>
+            <div style={{display:"flex", gap:8, marginTop:6}}>
+              <button className="btn btn-secondary btn-sm" style={{flex:1}}
+                onClick={()=>trackEvent("doctor_profile_viewed", { doctorId:d.id, doctorName:d.name, specialty:d.specialty })}>
+                View profile
+              </button>
+              <button className="btn btn-primary btn-sm" style={{flex:1}} onClick={()=>openBooking(d)}>Book</button>
+            </div>
+          </div>
+        ))}
+        {filtered.length === 0 && <div className="empty" style={{gridColumn:"1/-1"}}>No doctors match your filters.</div>}
+      </div>
+    </div>
+  );
+}
+
+function AppointmentsPage({ openBooking }){
+  const [tab, setTab] = useState("upcoming");
+  return (
+    <div>
+      <div className="section-head"><div className="section-title" style={{fontSize:20}}>Appointments</div></div>
+      <div className="tabbar">
+        {["upcoming","history"].map(t=>(
+          <div key={t} className={`tab ${tab===t?"active":""}`} onClick={()=>setTab(t)}>
+            {t==="upcoming" ? "Upcoming" : "History"}
+          </div>
+        ))}
+      </div>
+
+      {tab === "upcoming" && (
+        <div className="card">
+          {UPCOMING_APPOINTMENTS.length === 0 && <div className="empty">No upcoming appointments.</div>}
+          {UPCOMING_APPOINTMENTS.map(a=>(
+            <div className="row" key={a.id}>
+              <div className="row-avatar"><Icon name="calendar" width="17" height="17" /></div>
+              <div className="row-main">
+                <div className="row-title">{a.doctor} · {a.specialty}</div>
+                <div className="row-sub">{a.date} at {a.time} · {a.mode} · {a.location}</div>
+              </div>
+              <Pill tone="green">Confirmed</Pill>
+            </div>
+          ))}
+          <div style={{marginTop:14}}>
+            <button className="btn btn-primary" onClick={()=>openBooking(DOCTORS[0])}>
+              <Icon name="calendar" width="14" height="14" /> Book a new consultation
+            </button>
+          </div>
+        </div>
+      )}
+
+      {tab === "history" && (
+        <div className="card">
+          {APPOINTMENT_HISTORY.map(a=>(
+            <div className="row" key={a.id}>
+              <div className="row-avatar" style={{background:"var(--card)", color:"var(--text-secondary)"}}><Icon name="check" width="15" height="15" /></div>
+              <div className="row-main">
+                <div className="row-title">{a.doctor} · {a.specialty}</div>
+                <div className="row-sub">{a.date} at {a.time}</div>
+                <div className="row-sub" style={{marginTop:4}}>{a.notes}</div>
+              </div>
+              <Pill tone="gray">{a.status}</Pill>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function DiagnosticsPage({ openTestBooking }){
+  const [tab, setTab] = useState("recommended");
+  return (
+    <div>
+      <div className="section-head"><div className="section-title" style={{fontSize:20}}>Diagnostics</div></div>
+      <div className="tabbar">
+        {["recommended","history","reports"].map(t=>(
+          <div key={t} className={`tab ${tab===t?"active":""}`} onClick={()=>setTab(t)}>
+            {t==="recommended" ? "Recommended" : t==="history" ? "History" : "Reports"}
+          </div>
+        ))}
+      </div>
+
+      {tab === "recommended" && (
+        <div className="card">
+          {RECOMMENDED_TESTS.map(t=>(
+            <div className="row" key={t.id}>
+              <div className="row-avatar"><Icon name="flask" width="17" height="17" /></div>
+              <div className="row-main">
+                <div className="row-title">{t.name}</div>
+                <div className="row-sub">{t.reason} · Recommended by {t.recommendedBy} on {t.recommendedOn}</div>
+              </div>
+              <button className="btn btn-primary btn-sm" onClick={()=>openTestBooking(t)}>Book test</button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {tab === "history" && (
+        <div className="card">
+          {TEST_HISTORY.map(t=>(
+            <div className="row" key={t.id}>
+              <div className="row-avatar" style={{background:"var(--card)", color:"var(--text-secondary)"}}><Icon name="check" width="15" height="15" /></div>
+              <div className="row-main">
+                <div className="row-title">{t.name}</div>
+                <div className="row-sub">{t.date}</div>
+              </div>
+              <Pill tone="gray">{t.status}</Pill>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {tab === "reports" && (
+        <div className="card">
+          {TEST_HISTORY.filter(t=>t.report==="available").map(t=>(
+            <div className="row" key={t.id}>
+              <div className="row-avatar"><Icon name="upload" width="16" height="16" /></div>
+              <div className="row-main">
+                <div className="row-title">{t.name} report</div>
+                <div className="row-sub">Uploaded {t.date}</div>
+              </div>
+              <button className="btn btn-ghost btn-sm" onClick={()=>trackEvent("lab_result_uploaded", { testName: t.name })}>View report</button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ProgramsPage({ openEnroll }){
+  return (
+    <div>
+      <div className="section-head"><div className="section-title" style={{fontSize:20}}>Care programs</div></div>
+      <div className="grid grid-2">
+        {CARE_PROGRAMS.map(p=>(
+          <div className="card" key={p.id} onMouseEnter={()=>trackEvent("program_viewed", { programId:p.id, programName:p.name })}>
+            <div style={{display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:8}}>
+              <div className="program-title" style={{fontSize:16}}>{p.name}</div>
+              {p.recommended && <Pill tone="green">Recommended for you</Pill>}
+            </div>
+            <div className="program-desc" style={{marginBottom:14}}>{p.overview}</div>
+            <div style={{fontSize:12.5, fontWeight:600, color:"var(--text-secondary)", marginBottom:8}}>BENEFITS</div>
+            <ul style={{margin:"0 0 14px", padding:0, listStyle:"none", display:"flex", flexDirection:"column", gap:7}}>
+              {p.benefits.map((b,i)=>(
+                <li key={i} style={{fontSize:13, display:"flex", gap:8, alignItems:"flex-start"}}>
+                  <Icon name="check" width="14" height="14" style={{color:"var(--green)", marginTop:2, flexShrink:0}} />
+                  {b}
+                </li>
+              ))}
+            </ul>
+            <div style={{fontSize:12.5, fontWeight:600, color:"var(--text-secondary)", marginBottom:8}}>DOCTORS INVOLVED</div>
+            <div style={{display:"flex", gap:8, marginBottom:16, flexWrap:"wrap"}}>
+              {p.doctors.map((d,i)=><Pill tone="gray" key={i}>{d}</Pill>)}
+            </div>
+            <button className="btn btn-primary btn-block" onClick={()=>openEnroll(p)}>Enroll in this program</button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PatientPortalPage(){
+  return (
+    <div>
+      <div className="section-head"><div className="section-title" style={{fontSize:20}}>My health journey</div></div>
+
+      <div className="grid grid-2" style={{alignItems:"start"}}>
+        <div className="card">
+          <div className="section-title" style={{marginBottom:14}}>Journey timeline</div>
+          <div className="timeline">
+            <div className="timeline-item">
+              <div className="timeline-dot"></div>
+              <div className="timeline-date">21 May 2026</div>
+              <div className="timeline-title">Cardiology consultation completed</div>
+              <div className="timeline-desc">Dr. Ramesh Subramanian · Follow-up recommended in 30 days</div>
+            </div>
+            <div className="timeline-item">
+              <div className="timeline-dot muted"></div>
+              <div className="timeline-date">20 Jun 2026</div>
+              <div className="timeline-title">Follow-up window closed</div>
+              <div className="timeline-desc">No appointment booked within the recommended 30-day window</div>
+            </div>
+            <div className="timeline-item">
+              <div className="timeline-dot muted"></div>
+              <div className="timeline-date">02 Apr 2026</div>
+              <div className="timeline-title">Lipid Profile recommended</div>
+              <div className="timeline-desc">Dr. Karthik Iyer · Test not yet scheduled</div>
+            </div>
+            <div className="timeline-item">
+              <div className="timeline-dot muted"></div>
+              <div className="timeline-date">14 Feb 2026</div>
+              <div className="timeline-title">Diabetes risk assessment</div>
+              <div className="timeline-desc">Dr. Anjali Verma · HbA1c test recommended</div>
+            </div>
+          </div>
+        </div>
+
+        <div style={{display:"flex", flexDirection:"column", gap:16}}>
+          <div className="card-alt">
+            <div className="section-title" style={{marginBottom:10}}>Active care plans</div>
+            {ACTIVE_CARE_PLANS.map(cp=>(
+              <div className="row" key={cp.id} style={{borderBottom:"none", padding:"8px 0"}}>
+                <div className="row-avatar"><Icon name="portal" width="16" height="16" /></div>
+                <div className="row-main">
+                  <div className="row-title">{cp.name}</div>
+                  <div className="row-sub">Active since {cp.since}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="card-alt">
+            <div className="section-title" style={{marginBottom:10}}>Recommended follow-ups</div>
+            <div className="row" style={{borderBottom:"none", padding:"8px 0"}}>
+              <div className="row-avatar" style={{background:"#FEE2E2"}}><Icon name="alert" width="16" height="16" style={{color:"var(--error)"}} /></div>
+              <div className="row-main">
+                <div className="row-title">Cardiology follow-up</div>
+                <div className="row-sub">{FOLLOWUP_DAYS_OVERDUE} days overdue</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="card-alt">
+            <div className="section-title" style={{marginBottom:10}}>Pending diagnostics</div>
+            {RECOMMENDED_TESTS.map(t=>(
+              <div className="row" key={t.id} style={{borderBottom:"none", padding:"8px 0"}}>
+                <div className="row-avatar"><Icon name="flask" width="16" height="16" /></div>
+                <div className="row-main">
+                  <div className="row-title">{t.name}</div>
+                  <div className="row-sub">Recommended {t.recommendedOn}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="card-alt">
+            <div className="section-title" style={{marginBottom:10}}>Program enrollment status</div>
+            <div className="row" style={{borderBottom:"none", padding:"8px 0"}}>
+              <div className="row-main">
+                <div className="row-title">Diabetes Care Program</div>
+                <div className="row-sub">Eligible · Not yet enrolled</div>
+              </div>
+              <Pill tone="amber">Recommended</Pill>
+            </div>
+            <div className="row" style={{borderBottom:"none", padding:"8px 0"}}>
+              <div className="row-main">
+                <div className="row-title">Cardiac Care Program</div>
+                <div className="row-sub">Eligible · Not yet enrolled</div>
+              </div>
+              <Pill tone="amber">Recommended</Pill>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ProfilePage({ user, onSave }){
+  const [form, setForm] = useState({
+    name: user.name || "",
+    age: user.age || "",
+    gender: user.gender || "",
+    bloodGroup: user.bloodGroup || "",
+    city: user.city || "",
+  });
+
+  useEffect(()=>{
+    setForm({
+      name: user.name || "",
+      age: user.age || "",
+      gender: user.gender || "",
+      bloodGroup: user.bloodGroup || "",
+      city: user.city || "",
+    });
+  },[user]);
+
+  const setField = (key, value) => setForm(f => ({ ...f, [key]: value }));
+
+  return (
+    <div>
+      <div className="section-head"><div className="section-title" style={{fontSize:20}}>Profile & settings</div></div>
+      <div className="grid grid-2" style={{alignItems:"start"}}>
+        <div className="card">
+          <div className="section-title" style={{marginBottom:14}}>Personal information</div>
+          <div className="field"><label>Full name</label><input className="input" style={{width:"100%"}} value={form.name} onChange={e=>setField("name", e.target.value)} /></div>
+          <div className="field"><label>Patient ID</label><input className="input" style={{width:"100%"}} value={user.patientId || PATIENT.patientId} disabled /></div>
+          <div className="field"><label>Age</label><input className="input" style={{width:"100%"}} value={form.age} onChange={e=>setField("age", e.target.value)} /></div>
+          <div className="field"><label>Gender</label><input className="input" style={{width:"100%"}} value={form.gender} onChange={e=>setField("gender", e.target.value)} /></div>
+          <div className="field"><label>Blood group</label><input className="input" style={{width:"100%"}} value={form.bloodGroup} onChange={e=>setField("bloodGroup", e.target.value)} /></div>
+          <div className="field"><label>City</label><input className="input" style={{width:"100%"}} value={form.city} onChange={e=>setField("city", e.target.value)} /></div>
+          <button className="btn btn-primary" onClick={()=>onSave(form)}>Save changes</button>
+        </div>
+        <div className="card">
+          <div className="section-title" style={{marginBottom:14}}>Notification preferences</div>
+          {["Appointment reminders","Diagnostic result alerts","Care program updates","Promotional offers"].map((n,i)=>(
+            <div className="row" key={i}>
+              <div className="row-main"><div className="row-title" style={{fontWeight:500}}>{n}</div></div>
+              <input type="checkbox" defaultChecked={i<3} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   APP SHELL
+   ============================================================ */
+const PAGES = [
+  { key:"home", label:"Home", icon:"home" },
+  { key:"doctors", label:"Doctors", icon:"doctors" },
+  { key:"appointments", label:"Appointments", icon:"calendar" },
+  { key:"diagnostics", label:"Diagnostics", icon:"flask" },
+  { key:"programs", label:"Care Programs", icon:"heart" },
+  { key:"portal", label:"Patient Portal", icon:"portal" },
+  { key:"profile", label:"Profile", icon:"user" },
+];
+
+function App({ onLogout, user, onUpdateUser }){
+  const [page, setPage] = useState("home");
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [bookingDoctor, setBookingDoctor] = useState(null);
+  const [bookingTest, setBookingTest] = useState(null);
+  const [enrollProgram, setEnrollProgram] = useState(null);
+  const [toast, setToast] = useState(null);
+  const [activeBanner, setActiveBanner] = useState(()=>{
+    try{ return localStorage.getItem(BANNER_STORAGE_KEY) || null; }catch(e){ return null; }
+  });
+
+  // Listen for simulator-fired CDP events (BroadcastChannel, same-browser
+  // tabs) and localStorage 'storage' events (fallback / cross-tab) so the
+  // homepage banner updates live without a refresh. Only ONE banner is
+  // ever shown — whichever recognised event arrives most recently wins.
+  useEffect(()=>{
+    const applyEvent = (eventName) => {
+      if(!BANNER_CONFIG[eventName]) return;
+      setActiveBanner(eventName);
+      try{ localStorage.setItem(BANNER_STORAGE_KEY, eventName); }catch(e){}
+    };
+    let bcHandler;
+    if(bc){
+      bcHandler = (msg) => { if(msg && msg.data && msg.data.event) applyEvent(msg.data.event); };
+      bc.addEventListener("message", bcHandler);
+    }
+    const storageHandler = (e) => {
+      if(e.key === BANNER_STORAGE_KEY){
+        setActiveBanner(e.newValue || null);
+      }
+    };
+    window.addEventListener("storage", storageHandler);
+    return () => {
+      if(bc && bcHandler) bc.removeEventListener("message", bcHandler);
+      window.removeEventListener("storage", storageHandler);
+    };
+  },[]);
+
+  // Background CDP / identity simulation — fires once on load, no UI surface.
+  useEffect(()=>{
+    trackEvent("identity_resolved", { patientId: PATIENT.patientId });
+    trackEvent("customer_profile_unified", { patientId: PATIENT.patientId, sources: ["EHR","Booking","Diagnostics","CRM"] });
+    trackEvent("segment_assigned", { patientId: PATIENT.patientId, segment: "follow_up_due" });
+    trackEvent("segment_assigned", { patientId: PATIENT.patientId, segment: "diagnostic_dropoff_risk" });
+    trackEvent("segment_assigned", { patientId: PATIENT.patientId, segment: "diabetes_care_candidate" });
+    trackEvent("chronic_care_candidate_detected", { patientId: PATIENT.patientId, program: "Diabetes Care Program", reason: "Diabetes consultation + HbA1c recommendation + nutrition follow-up pattern" });
+    trackEvent("followup_recommended", { patientId: PATIENT.patientId, specialty:"Cardiology", doctor:"Dr. Ramesh Subramanian", windowDays: 30 });
+    if(FOLLOWUP_DAYS_OVERDUE > 0){
+      trackEvent("followup_due", { patientId: PATIENT.patientId, daysOverdue: FOLLOWUP_DAYS_OVERDUE });
+      trackEvent("patient_at_risk", { patientId: PATIENT.patientId, riskType: "follow_up_leakage", daysOverdue: FOLLOWUP_DAYS_OVERDUE });
+    }
+    trackEvent("test_recommended", { testName: "Lipid Profile" });
+    trackEvent("test_recommended", { testName: "HbA1c" });
+    trackEvent("diagnostic_dropoff_detected", { testName: "Lipid Profile", reason: "Recommended 02 Apr 2026, no booking on file" });
+    trackEvent("personalization_applied", { patientId: PATIENT.patientId, surface:"home", experiment:"diabetes_program_hero" });
+    trackEvent("experience_rendered", { surface:"home", variant:"personalized" });
+  },[]);
+
+  const navigate = (key) => {
+    setPage(key);
+    setMobileOpen(false);
+    trackEvent("page_viewed", { page: key });
+    window.scrollTo({ top:0, behavior:"smooth" });
+  };
+
+  useEffect(()=>{ trackEvent("page_viewed", { page:"home" }); },[]);
+
+  const openBooking = (doctor) => setBookingDoctor(doctor);
+  const openTestBooking = (test) => setBookingTest(test);
+  const openEnroll = (program) => setEnrollProgram(program);
+
+  // CTA on the homepage banner: open the right modal AND clear the banner +
+  // its persisted state immediately, per the "only one active state" rule.
+  const clearBanner = () => {
+    setActiveBanner(null);
+    try{ localStorage.removeItem(BANNER_STORAGE_KEY); }catch(e){}
+  };
+  const onBannerCta = (bannerKey) => {
+    const cfg = BANNER_CONFIG[bannerKey];
+    if(!cfg) return;
+    trackEvent("personalization_applied", { patientId: PATIENT.patientId, surface:"home_banner", event: bannerKey, action:"cta_clicked" });
+    if(cfg.openKey === "booking") openBooking(DOCTORS[0]);
+    if(cfg.openKey === "test") openTestBooking(RECOMMENDED_TESTS[0]);
+    if(cfg.openKey === "enroll") openEnroll(CARE_PROGRAMS.find(p=>p.id===cfg.programId) || CARE_PROGRAMS[0]);
+    clearBanner();
+  };
+
+  return (
+    <div className="app">
+      <div className="topbar">
+        <div className="topbar-inner">
+          <div className="brand">
+            <BrandMark/>
+            CareX
+          </div>
+          <div className="nav-links">
+            {PAGES.map(p=>(
+              <div key={p.key} className={`nav-link ${page===p.key?"active":""}`} onClick={()=>navigate(p.key)}>
+                {p.label}
+              </div>
+            ))}
+          </div>
+          <div className="nav-right">
+            <button className="icon-btn"><Icon name="bell" width="16" height="16" /><span className="dot-badge"></span></button>
+            <div className="avatar">{getInitials(user.name)}</div>
+            <span className="logout-link" onClick={onLogout}>Log out</span>
+            <button className="icon-btn mobile-toggle" onClick={()=>setMobileOpen(o=>!o)}>
+              <Icon name={mobileOpen ? "x" : "menu"} width="16" height="16" />
+            </button>
+          </div>
+        </div>
+        {mobileOpen && (
+          <div className="mobile-menu">
+            {PAGES.map(p=>(
+              <div key={p.key} className={`nav-link ${page===p.key?"active":""}`} onClick={()=>navigate(p.key)}>{p.label}</div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="page">
+        {page === "home" && <HomePage navigate={navigate} openBooking={openBooking} openTestBooking={openTestBooking} openEnroll={openEnroll} activeBanner={activeBanner} onBannerCta={onBannerCta} user={user} />}
+        {page === "doctors" && <DoctorsPage openBooking={openBooking} />}
+        {page === "appointments" && <AppointmentsPage openBooking={openBooking} />}
+        {page === "diagnostics" && <DiagnosticsPage openTestBooking={openTestBooking} />}
+        {page === "programs" && <ProgramsPage openEnroll={openEnroll} />}
+        {page === "portal" && <PatientPortalPage />}
+        {page === "profile" && <ProfilePage user={user} onSave={(updated)=>{ onUpdateUser(updated); setToast("Profile updated successfully"); }} />}
+        <div className="footer-note">CareX Hospitals · CRX-10482 · This is a sample patient experience for demonstration purposes</div>
+      </div>
+
+      {bookingDoctor && (
+        <BookConsultationModal doctor={bookingDoctor} onClose={()=>setBookingDoctor(null)} onConfirmed={(msg)=>setToast(msg)} />
+      )}
+      {bookingTest && (
+        <BookTestModal test={bookingTest} onClose={()=>setBookingTest(null)} onConfirmed={(msg)=>setToast(msg)} />
+      )}
+      {enrollProgram && (
+        <EnrollModal program={enrollProgram} onClose={()=>setEnrollProgram(null)} onConfirmed={(msg)=>setToast(msg)} />
+      )}
+      {toast && <Toast message={toast} onDone={()=>setToast(null)} />}
+    </div>
+  );
+}
+
+/* ============================================================
+   LOGIN / SIGN UP
+   Lightweight client-side gate in front of the patient portal.
+   No real backend — this is purely for demo flow control. Login
+   state is persisted in localStorage so a refresh stays logged in.
+   ============================================================ */
+const AUTH_KEY = "carex_logged_in";
+
+function LoginPage({ onLogin, onSwitch }){
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const submit = (e) => {
+    e.preventDefault();
+    if(!email || !password){ setError("Please enter your email and password."); return; }
+    setError("");
+
+    // Reuse the previously signed-up profile for this browser if one
+    // exists; otherwise derive a display name from the email entered.
+    const existing = loadUser();
+    const name = existing ? existing.name : nameFromEmail(email);
+    const user = existing
+      ? { ...existing, email }
+      : { name, email, age: PATIENT.age, gender: PATIENT.gender, bloodGroup: PATIENT.bloodGroup, city: PATIENT.city, patientId: PATIENT.patientId };
+
+    trackEvent("page_viewed", { page: "login_success" });
+    trackEvent("user_logged_in", { user_name: name });
+    if(window.analytics && typeof window.analytics.identify === "function"){
+      window.analytics.identify(user.patientId, { name: user.name, email: user.email });
+    }
+    onLogin(user);
+  };
+
+  return (
+    <div className="auth-shell">
+      <div className="auth-card">
+        <div className="auth-brand"><BrandMark/> CareX</div>
+        <div className="auth-title">Welcome back</div>
+        <div className="auth-sub">Log in to your patient portal</div>
+        {error && <div className="auth-error">{error}</div>}
+        <form onSubmit={submit}>
+          <div className="field">
+            <label>Email</label>
+            <input className="input" style={{width:"100%"}} type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" />
+          </div>
+          <div className="field">
+            <label>Password</label>
+            <input className="input" style={{width:"100%"}} type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="••••••••" />
+          </div>
+          <button className="btn btn-primary btn-block" type="submit">Log in</button>
+        </form>
+        <div className="auth-switch">Don't have an account? <a onClick={onSwitch}>Sign up</a></div>
+      </div>
+    </div>
+  );
+}
+
+function SignupPage({ onSignup, onSwitch }){
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const submit = (e) => {
+    e.preventDefault();
+    if(!name || !email || !password){ setError("Please fill in all fields."); return; }
+    setError("");
+
+    const user = { name, email, age: PATIENT.age, gender: PATIENT.gender, bloodGroup: PATIENT.bloodGroup, city: PATIENT.city, patientId: PATIENT.patientId };
+
+    trackEvent("page_viewed", { page: "signup_success" });
+    trackEvent("user_logged_in", { user_name: name });
+    if(window.analytics && typeof window.analytics.identify === "function"){
+      window.analytics.identify(user.patientId, { name: user.name, email: user.email });
+    }
+    onSignup(user);
+  };
+
+  return (
+    <div className="auth-shell">
+      <div className="auth-card">
+        <div className="auth-brand"><BrandMark/> CareX</div>
+        <div className="auth-title">Create your account</div>
+        <div className="auth-sub">Set up access to your patient portal</div>
+        {error && <div className="auth-error">{error}</div>}
+        <form onSubmit={submit}>
+          <div className="field">
+            <label>Full name</label>
+            <input className="input" style={{width:"100%"}} value={name} onChange={e=>setName(e.target.value)} placeholder="Your full name" />
+          </div>
+          <div className="field">
+            <label>Email</label>
+            <input className="input" style={{width:"100%"}} type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" />
+          </div>
+          <div className="field">
+            <label>Password</label>
+            <input className="input" style={{width:"100%"}} type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="••••••••" />
+          </div>
+          <button className="btn btn-primary btn-block" type="submit">Sign up</button>
+        </form>
+        <div className="auth-switch">Already have an account? <a onClick={onSwitch}>Log in</a></div>
+      </div>
+    </div>
+  );
+}
+
+function Root(){
+  const [authed, setAuthed] = useState(()=>{
+    try{ return localStorage.getItem(AUTH_KEY) === "true"; }catch(e){ return false; }
+  });
+  const [user, setUser] = useState(()=>loadUser());
+  const [authView, setAuthView] = useState("login");
+
+  const login = (newUser) => {
+    saveUser(newUser);
+    setUser(newUser);
+    try{ localStorage.setItem(AUTH_KEY, "true"); }catch(e){}
+    setAuthed(true);
+  };
+  // After a successful sign up, save the profile but send the user back to
+  // the Login page instead of logging them straight in to the Main/Home page.
+  const completeSignup = (newUser) => {
+    saveUser(newUser);
+    setUser(newUser);
+    setAuthView("login");
+  };
+  const logout = () => {
+    try{ localStorage.removeItem(AUTH_KEY); }catch(e){}
+    setAuthed(false);
+    setAuthView("login");
+  };
+  const updateUser = (updates) => {
+    const merged = { ...(user || {}), ...updates };
+    saveUser(merged);
+    setUser(merged);
+  };
+
+  if(!authed){
+    return authView === "login"
+      ? <LoginPage onLogin={login} onSwitch={()=>setAuthView("signup")} />
+      : <SignupPage onSignup={completeSignup} onSwitch={()=>setAuthView("login")} />;
+  }
+  const safeUser = user || { name: "", email: "", patientId: PATIENT.patientId, age: PATIENT.age, gender: PATIENT.gender, bloodGroup: PATIENT.bloodGroup, city: PATIENT.city };
+  return <App onLogout={logout} user={safeUser} onUpdateUser={updateUser} />;
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<Root/>);
+</script>
+</body>
+</html>
