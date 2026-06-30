@@ -373,32 +373,32 @@ function getInitials(name){
 }
 
 const DOCTORS = [
-  { id:"d1", name:"Dr. Ramesh Subramanian", specialty:"Cardiology", location:"Anna Nagar, Chennai", experience:18, rating:4.8, availability:"Mon, Wed, Fri", fee:900 },
-  { id:"d2", name:"Dr. Anjali Verma", specialty:"Endocrinology", location:"Adyar, Chennai", experience:12, rating:4.9, availability:"Tue, Thu, Sat", fee:800 },
-  { id:"d3", name:"Dr. Karthik Iyer", specialty:"Internal Medicine", location:"T Nagar, Chennai", experience:9, rating:4.6, availability:"Mon–Sat", fee:600 },
-  { id:"d4", name:"Dr. Meera Pillai", specialty:"Nephrology", location:"Velachery, Chennai", experience:15, rating:4.7, availability:"Wed, Fri, Sat", fee:850 },
-  { id:"d5", name:"Dr. Suresh Nair", specialty:"Orthopedics", location:"Nungambakkam, Chennai", experience:20, rating:4.8, availability:"Mon, Tue, Thu", fee:750 },
-  { id:"d6", name:"Dr. Priya Raghavan", specialty:"Nutrition & Dietetics", location:"Adyar, Chennai", experience:7, rating:4.7, availability:"Tue, Wed, Fri", fee:500 },
-  { id:"d7", name:"Dr. Vikram Chowdhury", specialty:"Pulmonology", location:"Mylapore, Chennai", experience:11, rating:4.5, availability:"Mon, Wed, Sat", fee:700 },
-  { id:"d8", name:"Dr. Divya Krishnamurthy", specialty:"Gynecology", location:"Besant Nagar, Chennai", experience:14, rating:4.9, availability:"Tue, Thu, Fri", fee:800 },
+  { id:"d1", name:"Dr. John Mitchell", specialty:"Cardiology", location:"Mount Sinai Hospital, New York", experience:18, rating:4.8, availability:"Mon, Wed, Fri", fee:900 },
+  { id:"d2", name:"Dr. Sarah Bennett", specialty:"Endocrinology", location:"Cleveland Clinic, Cleveland", experience:12, rating:4.9, availability:"Tue, Thu, Sat", fee:800 },
+  { id:"d3", name:"Dr. Michael Turner", specialty:"Internal Medicine", location:"Mayo Clinic, Rochester", experience:9, rating:4.6, availability:"Mon–Sat", fee:600 },
+  { id:"d4", name:"Dr. Emily Carter", specialty:"Nephrology", location:"Johns Hopkins Hospital, Baltimore", experience:15, rating:4.7, availability:"Wed, Fri, Sat", fee:850 },
+  { id:"d5", name:"Dr. James Anderson", specialty:"Orthopedics", location:"Massachusetts General Hospital, Boston", experience:20, rating:4.8, availability:"Mon, Tue, Thu", fee:750 },
+  { id:"d6", name:"Dr. Olivia Reynolds", specialty:"Nutrition & Dietetics", location:"NewYork-Presbyterian Hospital, New York", experience:7, rating:4.7, availability:"Tue, Wed, Fri", fee:500 },
+  { id:"d7", name:"Dr. David Coleman", specialty:"Pulmonology", location:"UCLA Medical Center, Los Angeles", experience:11, rating:4.5, availability:"Mon, Wed, Sat", fee:700 },
+  { id:"d8", name:"Dr. Jessica Parker", specialty:"Gynecology", location:"Cedars-Sinai Medical Center, Los Angeles", experience:14, rating:4.9, availability:"Tue, Thu, Fri", fee:800 },
 ];
 
 const SPECIALTIES = ["All Specialties", ...new Set(DOCTORS.map(d=>d.specialty))];
 const LOCATIONS = ["All Locations", ...new Set(DOCTORS.map(d=>d.location.split(", ")[0]))];
 
 const UPCOMING_APPOINTMENTS = [
-  { id:"a101", doctor:"Dr. Anjali Verma", specialty:"Endocrinology", date:"28 Jun 2026", time:"10:30 AM", mode:"In-person", location:"CareX Adyar Centre" },
+  { id:"a101", doctor:"Dr. Sarah Bennett", specialty:"Endocrinology", date:"28 Jun 2026", time:"10:30 AM", mode:"In-person", location:"CareX Adyar Centre" },
 ];
 
 const APPOINTMENT_HISTORY = [
-  { id:"a098", doctor:"Dr. Ramesh Subramanian", specialty:"Cardiology", date:"21 May 2026", time:"5:00 PM", status:"Completed", notes:"Routine cardiac evaluation. Follow-up advised in 30 days." },
-  { id:"a085", doctor:"Dr. Karthik Iyer", specialty:"Internal Medicine", date:"02 Apr 2026", time:"11:00 AM", status:"Completed", notes:"General check-up. Lipid profile recommended." },
-  { id:"a071", doctor:"Dr. Anjali Verma", specialty:"Endocrinology", date:"14 Feb 2026", time:"9:30 AM", status:"Completed", notes:"Diabetes risk assessment. HbA1c test advised." },
+  { id:"a098", doctor:"Dr. John Mitchell", specialty:"Cardiology", date:"21 May 2026", time:"5:00 PM", status:"Completed", notes:"Routine cardiac evaluation. Follow-up advised in 30 days." },
+  { id:"a085", doctor:"Dr. Michael Turner", specialty:"Internal Medicine", date:"02 Apr 2026", time:"11:00 AM", status:"Completed", notes:"General check-up. Lipid profile recommended." },
+  { id:"a071", doctor:"Dr. Sarah Bennett", specialty:"Endocrinology", date:"14 Feb 2026", time:"9:30 AM", status:"Completed", notes:"Diabetes risk assessment. HbA1c test advised." },
 ];
 
 const RECOMMENDED_TESTS = [
-  { id:"t1", name:"Lipid Profile", recommendedBy:"Dr. Karthik Iyer", recommendedOn:"02 Apr 2026", status:"Pending", reason:"Routine cardiovascular risk screening" },
-  { id:"t2", name:"HbA1c (Glycated Haemoglobin)", recommendedBy:"Dr. Anjali Verma", recommendedOn:"14 Feb 2026", status:"Pending", reason:"Diabetes risk assessment follow-through" },
+  { id:"t1", name:"Lipid Profile", recommendedBy:"Dr. Michael Turner", recommendedOn:"02 Apr 2026", status:"Pending", reason:"Routine cardiovascular risk screening" },
+  { id:"t2", name:"HbA1c (Glycated Haemoglobin)", recommendedBy:"Dr. Sarah Bennett", recommendedOn:"14 Feb 2026", status:"Pending", reason:"Diabetes risk assessment follow-through" },
 ];
 
 const TEST_HISTORY = [
@@ -417,28 +417,28 @@ const CARE_PROGRAMS = [
     id:"diabetes", name:"Diabetes Care Program",
     overview:"A structured 12-month program combining endocrinology, nutrition coaching and continuous glucose tracking to keep HbA1c within target range.",
     benefits:["Quarterly HbA1c & lipid tracking","Dedicated nutrition coaching","Dose review every 90 days","24/7 care coordinator access"],
-    doctors:["Dr. Anjali Verma","Dr. Priya Raghavan"],
+    doctors:["Dr. Sarah Bennett","Dr. Olivia Reynolds"],
     recommended:true,
   },
   {
     id:"cardiac", name:"Cardiac Care Program",
     overview:"Ongoing cardiovascular risk management for patients with hypertension, prior cardiac events, or high-risk lipid profiles.",
     benefits:["Structured follow-up cadence","Home BP monitoring kit","Annual 2D Echo & stress test","Cardiologist tele-rounds"],
-    doctors:["Dr. Ramesh Subramanian"],
+    doctors:["Dr. John Mitchell"],
     recommended:true,
   },
   {
     id:"hypertension", name:"Hypertension Management",
     overview:"Continuous blood pressure management combining medication titration, lifestyle coaching, and remote monitoring.",
     benefits:["Remote BP monitoring","Monthly physician review","Salt & lifestyle coaching","Medication adherence support"],
-    doctors:["Dr. Karthik Iyer","Dr. Ramesh Subramanian"],
+    doctors:["Dr. Michael Turner","Dr. John Mitchell"],
     recommended:false,
   },
   {
     id:"weight", name:"Weight Management",
     overview:"A clinically supervised program for sustainable weight management combining nutrition, metabolic screening and activity coaching.",
     benefits:["Metabolic panel every 90 days","1:1 nutrition coaching","Activity & sleep tracking","Behavioural coaching sessions"],
-    doctors:["Dr. Priya Raghavan","Dr. Anjali Verma"],
+    doctors:["Dr. Olivia Reynolds","Dr. Sarah Bennett"],
     recommended:false,
   },
 ];
@@ -448,9 +448,9 @@ const ACTIVE_CARE_PLANS = [
 ];
 
 const RECENT_ACTIVITY = [
-  { id:"r1", text:"Cardiology consultation completed with Dr. Ramesh Subramanian", date:"21 May 2026" },
-  { id:"r2", text:"Lipid Profile recommended by Dr. Karthik Iyer", date:"02 Apr 2026" },
-  { id:"r3", text:"HbA1c test recommended by Dr. Anjali Verma", date:"14 Feb 2026" },
+  { id:"r1", text:"Cardiology consultation completed with Dr. John Mitchell", date:"21 May 2026" },
+  { id:"r2", text:"Lipid Profile recommended by Dr. Michael Turner", date:"02 Apr 2026" },
+  { id:"r3", text:"HbA1c test recommended by Dr. Sarah Bennett", date:"14 Feb 2026" },
   { id:"r4", text:"Annual full body checkup report uploaded", date:"30 Jan 2026" },
 ];
 
@@ -1088,7 +1088,7 @@ function PatientPortalPage(){
               <div className="timeline-dot"></div>
               <div className="timeline-date">21 May 2026</div>
               <div className="timeline-title">Cardiology consultation completed</div>
-              <div className="timeline-desc">Dr. Ramesh Subramanian · Follow-up recommended in 30 days</div>
+              <div className="timeline-desc">Dr. John Mitchell · Follow-up recommended in 30 days</div>
             </div>
             <div className="timeline-item">
               <div className="timeline-dot muted"></div>
@@ -1100,13 +1100,13 @@ function PatientPortalPage(){
               <div className="timeline-dot muted"></div>
               <div className="timeline-date">02 Apr 2026</div>
               <div className="timeline-title">Lipid Profile recommended</div>
-              <div className="timeline-desc">Dr. Karthik Iyer · Test not yet scheduled</div>
+              <div className="timeline-desc">Dr. Michael Turner · Test not yet scheduled</div>
             </div>
             <div className="timeline-item">
               <div className="timeline-dot muted"></div>
               <div className="timeline-date">14 Feb 2026</div>
               <div className="timeline-title">Diabetes risk assessment</div>
-              <div className="timeline-desc">Dr. Anjali Verma · HbA1c test recommended</div>
+              <div className="timeline-desc">Dr. Sarah Bennett · HbA1c test recommended</div>
             </div>
           </div>
         </div>
@@ -1280,7 +1280,7 @@ function App({ onLogout, user, onUpdateUser }){
     trackEvent("segment_assigned", { patientId: PATIENT.patientId, segment: "diagnostic_dropoff_risk" });
     trackEvent("segment_assigned", { patientId: PATIENT.patientId, segment: "diabetes_care_candidate" });
     trackEvent("chronic_care_candidate_detected", { patientId: PATIENT.patientId, program: "Diabetes Care Program", reason: "Diabetes consultation + HbA1c recommendation + nutrition follow-up pattern" });
-    trackEvent("followup_recommended", { patientId: PATIENT.patientId, specialty:"Cardiology", doctor:"Dr. Ramesh Subramanian", windowDays: 30 });
+    trackEvent("followup_recommended", { patientId: PATIENT.patientId, specialty:"Cardiology", doctor:"Dr. John Mitchell", windowDays: 30 });
     if(FOLLOWUP_DAYS_OVERDUE > 0){
       trackEvent("followup_due", { patientId: PATIENT.patientId, daysOverdue: FOLLOWUP_DAYS_OVERDUE });
       trackEvent("patient_at_risk", { patientId: PATIENT.patientId, riskType: "follow_up_leakage", daysOverdue: FOLLOWUP_DAYS_OVERDUE });

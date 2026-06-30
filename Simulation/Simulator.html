@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <script>
@@ -161,6 +161,42 @@ function emit(eventName, properties = {}){
   }
   return payload;
 }
+
+/* ============================================================
+   >>> NEW CODE START: UNIQUE OPERATOR ID + BACKEND STATS <<<
+   Tracks who is running simulations (unique per browser) and
+   pulls live unique-user / unique-simulation-clicker counts
+   from the lightweight tracking backend for the banner below.
+   ============================================================ */
+const BACKEND_BASE_URL = "http://localhost:4000"; // same backend used by index.html
+
+function getOrCreateOperatorId(){
+  try{
+    // Reuse the patient portal's ID if this is the same browser/domain,
+    // otherwise fall back to a dedicated Simulation Center operator ID.
+    let oid = localStorage.getItem("carex_unique_user_id") || localStorage.getItem("carex_sim_operator_id");
+    if(!oid){
+      oid = "op_" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+      localStorage.setItem("carex_sim_operator_id", oid);
+    }
+    return oid;
+  }catch(e){ return "op_" + Date.now(); }
+}
+
+function notifyBackend(path, body){
+  try{
+    fetch(BACKEND_BASE_URL + path, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    }).catch(()=>{});
+  }catch(e){}
+}
+
+function fetchStats(){
+  return fetch(BACKEND_BASE_URL + "/api/stats").then(r=>r.json()).catch(()=>null);
+}
+/* >>> NEW CODE END <<< */
 
 function Icon({ name, ...props }){
   const paths = {
@@ -358,6 +394,17 @@ function App(){
   const [feed, setFeed] = useState([]);
   const timeoutsRef = useRef([]);
 
+  // >>> NEW CODE START: live unique-user / unique-clicker stats for the banner <<<
+  const [stats, setStats] = useState({ totalUniqueUsers: 0, uniqueSimulationClickers: 0 });
+  useEffect(()=>{
+    let active = true;
+    const load = () => fetchStats().then(s => { if(active && s) setStats(s); });
+    load();
+    const interval = setInterval(load, 5000);
+    return () => { active = false; clearInterval(interval); };
+  }, []);
+  // >>> NEW CODE END <<<
+
   useEffect(()=>{
     if(!bc) return;
     const handler = (msg) => {
@@ -377,6 +424,18 @@ function App(){
     const sim = SIMULATIONS[key];
     const patientIdMatch = sim.patient.match(/CRX-\d+/);
     const patientId = patientIdMatch ? patientIdMatch[0] : sim.patient;
+
+    // >>> NEW CODE START: simulation_clicked tracking (unique users) <<<
+    const operatorId = getOrCreateOperatorId();
+    emit("simulation_clicked", { simulation: key, simulationTitle: sim.title, operatorId });
+    if(window.analytics && typeof window.analytics.identify === "function"){
+      window.analytics.identify(operatorId);
+    }
+    notifyBackend("/api/simulation/click", { userId: operatorId });
+    // Refresh stats shortly after so the banner updates almost immediately
+    setTimeout(()=>{ fetchStats().then(s=>{ if(s) setStats(s); }); }, 400);
+    // >>> NEW CODE END <<<
+
     sim.steps.forEach((s, i)=>{
       const t = setTimeout(()=>{
         emit(s.event, { patient: sim.patient, step: i+1, simulation: key });
@@ -415,6 +474,13 @@ function App(){
             </div>
           </div>
           <div style={{display:"flex", alignItems:"center", gap:14}}>
+            {/* >>> NEW CODE START: unique users / simulation clickers banner >>> */}
+            <div className="conn-pill" style={{gap:10}} title="Live counts from the tracking backend">
+              <span>👥 {stats.totalUniqueUsers} unique users</span>
+              <span style={{opacity:.4}}>·</span>
+              <span>🧪 {stats.uniqueSimulationClickers} ran a simulation</span>
+            </div>
+            {/* >>> NEW CODE END <<< */}
             <div className="env-pill">Internal · Not patient-facing</div>
             <div className="conn-pill"><span className="conn-dot"></span>Listening on shared event bus</div>
           </div>
